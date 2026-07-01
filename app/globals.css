@@ -1,0 +1,84 @@
+:root{
+  --ink:#151310;
+  --ink-soft:#211d18;
+  --ivory:#F4EFE4;
+  --ivory-dim:#B8B0A0;
+  --gold:#C99A5B;
+  --line:#3a352c;
+  --error:#e07856;
+}
+*{box-sizing:border-box;}
+html,body{margin:0; padding:0;}
+body{
+  background:var(--ink);
+  color:var(--ivory);
+  font-family:'Inter', sans-serif;
+  min-height:100vh;
+}
+
+.auth-shell{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:6vw;
+}
+.auth-card{
+  width:100%;
+  max-width:400px;
+}
+.auth-brand{
+  display:flex; align-items:center; gap:10px;
+  font-family:'Fraunces', serif; font-weight:560; font-size:1.1rem;
+  margin-bottom:48px;
+}
+.brand-mark{
+  width:9px; height:9px; border-radius:50%;
+  background:linear-gradient(135deg,#ff5f6d,#3ea9ff,#a06bff);
+}
+.auth-card h1{
+  font-family:'Fraunces', serif; font-weight:560;
+  font-size:1.8rem; line-height:1.2; margin-bottom:12px;
+}
+.auth-card p.sub{
+  color:var(--ivory-dim); font-size:0.92rem; line-height:1.55;
+  margin-bottom:32px;
+}
+label{
+  display:block; font-size:0.78rem; text-transform:uppercase;
+  letter-spacing:0.08em; color:var(--ivory-dim); margin-bottom:8px;
+}
+input[type="text"], input[type="email"]{
+  width:100%;
+  background:var(--ink-soft);
+  border:1px solid var(--line);
+  color:var(--ivory);
+  padding:13px 16px;
+  border-radius:10px;
+  font-size:0.95rem;
+  margin-bottom:20px;
+}
+input:focus-visible{outline:2px solid var(--gold); outline-offset:1px;}
+.checkbox-row{
+  display:flex; align-items:center; gap:10px;
+  margin-bottom:24px; font-size:0.88rem; color:var(--ivory-dim);
+}
+button{
+  width:100%;
+  background:var(--ivory); color:var(--ink);
+  border:none; padding:15px; border-radius:100px;
+  font-size:0.92rem; font-weight:500; cursor:pointer;
+  transition:background .2s ease;
+}
+button:hover, button:focus-visible{background:var(--gold);}
+button:disabled{opacity:0.5; cursor:default;}
+.hint{
+  margin-top:18px; font-size:0.82rem; color:var(--ivory-dim); text-align:center;
+}
+.error-msg{
+  color:var(--error); font-size:0.85rem; margin-bottom:16px;
+}
+.success-box{
+  border:1px solid var(--line); border-radius:12px; padding:24px;
+  text-align:center; color:var(--ivory-dim); font-size:0.9rem; line-height:1.6;
+}
