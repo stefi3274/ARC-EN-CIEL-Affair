@@ -1,5 +1,3 @@
-import SignOutButton from '@/app/app/sign-out-button';
-
 const LINKS = [
   { href: '/app', label: 'Fil', key: 'fil' },
   { href: '/app/rencontre', label: 'Rencontre', key: 'rencontre' },
@@ -11,7 +9,21 @@ const LINKS = [
 export default function TopBar(props: { active: string }) {
   return (
     <header className="top-bar">
-      <div className="auth-brand"><span className="brand-mark"></span>ARC-EN-CIEL Affair</div>
+      <div className="top-bar-row">
+        <a href="/app" className="auth-brand">
+          <span className="brand-mark"></span>
+          <span className="brand-word">ARC-EN-CIEL</span>
+          <span className="brand-word brand-word-sub">Affair</span>
+        </a>
+        <a
+          href="/app/profil"
+          className={'profil-link' + (props.active === 'profil' ? ' active' : '')}
+          aria-label="Profil"
+        >
+          P
+        </a>
+      </div>
+
       <nav className="module-nav">
         {LINKS.map((link) => (
           <a
@@ -23,7 +35,6 @@ export default function TopBar(props: { active: string }) {
           </a>
         ))}
       </nav>
-      <SignOutButton />
     </header>
   );
 }
