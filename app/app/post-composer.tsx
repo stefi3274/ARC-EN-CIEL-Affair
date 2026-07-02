@@ -21,7 +21,7 @@ export default function PostComposer() {
     const user = userResult.data.user;
 
     if (!user) {
-      setError('Session expiree, reconnecte-toi.');
+      setError("Session expirée, reconnecte-toi.");
       setLoading(false);
       return;
     }
@@ -34,7 +34,7 @@ export default function PostComposer() {
     setLoading(false);
 
     if (result.error) {
-      setError('Publication impossible. Reessaie.');
+      setError("Publication impossible. Réessaie.");
       return;
     }
 
@@ -52,7 +52,7 @@ export default function PostComposer() {
       />
       {error && <p className="error-msg">{error}</p>}
       <button type="submit" disabled={loading || !content.trim()}>
-        {loading ? 'Publication...' : 'Publier'}
+        {loading ? 'Publication...' : 'Publiér'}
       </button>
     </form>
   );

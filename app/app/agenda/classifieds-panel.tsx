@@ -48,12 +48,12 @@ export default function ClassifiedsPanel(props: { classifieds: any[]; onChanged:
   return (
     <div>
       <button type="button" onClick={() => setShowForm((v) => !v)} style={{ marginBottom: 20 }}>
-        {showForm ? 'Annuler' : '+ Publier une annonce'}
+        {showForm ? 'Annuler' : '+ Publiér une annonce'}
       </button>
 
       {showForm && (
         <form onSubmit={handleCreate} className="cv-box">
-          <label htmlFor="clCategory">Categorie</label>
+          <label htmlFor="clCategory">Catégorie</label>
           <input id="clCategory" type="text" placeholder="Logement, covoiturage..." value={category} onChange={(e) => setCategory(e.target.value)} style={{ marginBottom: 16 }} />
 
           <label htmlFor="clTitle">Titre</label>
@@ -69,7 +69,7 @@ export default function ClassifiedsPanel(props: { classifieds: any[]; onChanged:
           <input id="clLocation" type="text" value={location} onChange={(e) => setLocation(e.target.value)} style={{ marginBottom: 16 }} />
 
           <button type="submit" disabled={saving || !title}>
-            {saving ? 'Publication...' : 'Publier'}
+            {saving ? 'Publication...' : 'Publiér'}
           </button>
         </form>
       )}

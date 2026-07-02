@@ -18,7 +18,11 @@
   --violet:#9A7BC1;
   --violet-soft:#2a2233;
   --violet-deep:#6b4a95;
+  --blue:#6C93B8;
+  --blue-soft:#1f2833;
+  --blue-deep:#4a6a8a;
 }
+html{ font-size:17.5px; }
 *{box-sizing:border-box;}
 html,body{margin:0; padding:0;}
 body{
@@ -134,10 +138,16 @@ button:disabled{opacity:0.5; cursor:default;}
 /* ---------- NAV (partagee entre modules) ---------- */
 .module-nav{ display:flex; gap:22px; }
 .module-nav a{
-  color:var(--ivory-dim); text-decoration:none; font-size:0.85rem;
+  color:var(--ivory-dim); text-decoration:none; font-size:0.95rem;
   padding-bottom:2px; border-bottom:2px solid transparent;
+  transition:color .2s ease, border-color .2s ease;
 }
-.module-nav a.active{ color:var(--ivory); border-color:var(--rose); }
+.module-nav a:hover{ color:var(--ivory); }
+.module-nav a.fil.active{ color:var(--blue); border-color:var(--blue); }
+.module-nav a.rencontre.active{ color:var(--rose); border-color:var(--rose); }
+.module-nav a.emploi.active{ color:var(--green); border-color:var(--green); }
+.module-nav a.marketplace.active{ color:var(--orange); border-color:var(--orange); }
+.module-nav a.agenda.active{ color:var(--violet); border-color:var(--violet); }
 
 /* ---------- RENCONTRE ---------- */
 .rencontre-main{ max-width:520px; margin:0 auto; padding:28px 20px 90px; }

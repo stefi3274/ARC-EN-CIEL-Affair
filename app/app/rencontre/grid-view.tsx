@@ -10,7 +10,7 @@ type Profile = {
 
 export default function GridView(props: { profiles: Profile[]; onSwipe: (userId: string, liked: boolean) => void }) {
   if (props.profiles.length === 0) {
-    return <p className="empty-state">Plus personne a decouvrir pour le moment. Reviens plus tard.</p>;
+    return <p className="empty-state">Plus personne à découvrir pour le moment. Reviens plus tard.</p>;
   }
 
   return (

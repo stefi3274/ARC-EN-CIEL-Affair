@@ -68,12 +68,12 @@ export default function PetitionsPanel(props: {
   return (
     <div>
       <button type="button" onClick={() => setShowForm((v) => !v)} style={{ marginBottom: 20 }}>
-        {showForm ? 'Annuler' : '+ Lancer une petition'}
+        {showForm ? 'Annuler' : "+ Lancer une pétition"}
       </button>
 
       {!props.canSign && (
         <p className="hint" style={{ marginBottom: 20 }}>
-          Confirme ton email pour pouvoir signer des petitions.
+          Confirme ton email pour pouvoir signer des pétitions.
         </p>
       )}
 
@@ -89,12 +89,12 @@ export default function PetitionsPanel(props: {
           <input id="petGoal" type="text" inputMode="numeric" value={goal} onChange={(e) => setGoal(e.target.value.replace(/[^0-9]/g, ''))} style={{ marginBottom: 16 }} />
 
           <button type="submit" disabled={saving || !title}>
-            {saving ? 'Creation...' : 'Publier la petition'}
+            {saving ? 'Création...' : 'Publiér la pétition'}
           </button>
         </form>
       )}
 
-      {props.petitions.length === 0 && <p className="empty-state">Aucune petition pour le moment.</p>}
+      {props.petitions.length === 0 && <p className="empty-state">Aucune pétition pour le moment.</p>}
 
       {props.petitions.map((pet) => {
         const count = props.signatureCounts[pet.id] ?? 0;
@@ -116,7 +116,7 @@ export default function PetitionsPanel(props: {
               onClick={() => handleSign(pet.id)}
               style={{ marginTop: 12 }}
             >
-              {alreadySigned ? 'Deja signe' : signing === pet.id ? 'Envoi...' : 'Signer'}
+              {alreadySigned ? 'Déjà signé' : signing === pet.id ? 'Envoi...' : 'Signer'}
             </button>
           </div>
         );

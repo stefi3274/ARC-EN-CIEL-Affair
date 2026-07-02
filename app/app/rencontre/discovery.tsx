@@ -1,15 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import TabBar from '@/components/tab-bar';
-import PanelLoading from '@/components/panel-loading';
-
-const GridView = dynamic(() => import('./grid-view'), { loading: () => <PanelLoading />, ssr: false });
-const SwipeView = dynamic(() => import('./swipe-view'), { loading: () => <PanelLoading />, ssr: false });
-const ProfilForm = dynamic(() => import('./profil-form'), { loading: () => <PanelLoading />, ssr: false });
+import GridView from './grid-view';
+import SwipeView from './swipe-view';
+import ProfilForm from './profil-form';
 
 type Profile = {
   userId: string;
@@ -56,7 +53,7 @@ export default function Discovery(props: Props) {
         .maybeSingle();
 
       if (match) {
-        setMatchMessage('Match ! Vous vous etes plu mutuellement.');
+        setMatchMessage("Match ! Vous vous êtes plu mutuellement.");
         setTimeout(() => setMatchMessage(null), 3000);
       }
     }

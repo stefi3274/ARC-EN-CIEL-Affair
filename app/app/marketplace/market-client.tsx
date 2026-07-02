@@ -1,14 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import TabBar from '@/components/tab-bar';
-import PanelLoading from '@/components/panel-loading';
-
-const Browser = dynamic(() => import('./browser'), { loading: () => <PanelLoading />, ssr: false });
-const SellForm = dynamic(() => import('./sell-form'), { loading: () => <PanelLoading />, ssr: false });
-const MyListings = dynamic(() => import('./my-listings'), { loading: () => <PanelLoading />, ssr: false });
+import Browser from './browser';
+import SellForm from './sell-form';
+import MyListings from './my-listings';
 
 type Props = {
   currentUserId: string;

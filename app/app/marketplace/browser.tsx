@@ -16,7 +16,7 @@ export default function Browser(props: { listings: any[] }) {
             </div>
             <div className="market-info">
               <div className="market-title">{l.title}</div>
-              <div className="market-price">{l.price ? l.price + ' $' : 'Prix a discuter'}</div>
+              <div className="market-price">{l.price ? l.price + ' $' : 'Prix à discuter'}</div>
               <div className="market-seller">{l.sellerName}</div>
               <div className="market-tags">
                 {l.categories?.name && <span className="market-tag">{l.categories.name}</span>}

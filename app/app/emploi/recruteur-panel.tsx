@@ -81,10 +81,10 @@ export default function RecruteurPanel(props: {
   if (!props.myCompany) {
     return (
       <div className="cv-box">
-        <h1>Creer ton entreprise</h1>
-        <p className="sub">Necessaire pour publier des offres.</p>
+        <h1>Créer ton entreprise</h1>
+        <p className="sub">Nécessaire pour publier des offres.</p>
         <form onSubmit={createCompany}>
-          <label htmlFor="companyName">Nom de l entreprise</label>
+          <label htmlFor="companyName">Nom de l'entreprise</label>
           <input
             id="companyName"
             type="text"
@@ -102,7 +102,7 @@ export default function RecruteurPanel(props: {
             style={{ marginBottom: 16 }}
           />
           <button type="submit" disabled={creatingCompany || !companyName}>
-            {creatingCompany ? 'Creation...' : 'Creer l entreprise'}
+            {creatingCompany ? 'Création...' : "Créer l'entreprise"}
           </button>
         </form>
       </div>
@@ -113,7 +113,7 @@ export default function RecruteurPanel(props: {
     <div>
       <div className="cv-box">
         <h1>{props.myCompany.name}</h1>
-        <p className="sub">Publier une nouvelle offre</p>
+        <p className="sub">Publiér une nouvelle offre</p>
         <form onSubmit={createListing}>
           <label htmlFor="listingTitle">Titre du poste</label>
           <input
@@ -154,13 +154,13 @@ export default function RecruteurPanel(props: {
             <input type="checkbox" checked={listingRemote} onChange={(e) => setListingRemote(e.target.checked)} />
           </div>
           <button type="submit" disabled={creatingListing || !listingTitle}>
-            {creatingListing ? 'Publication...' : 'Publier l offre'}
+            {creatingListing ? 'Publication...' : "Publiér l'offre"}
           </button>
         </form>
       </div>
 
       <div className="cv-box">
-        <h1>Candidatures recues</h1>
+        <h1>Candidatures reçues</h1>
         {props.applicationsReceived.length === 0 && (
           <p className="hint">Aucune candidature pour le moment.</p>
         )}

@@ -14,7 +14,11 @@ export default function TopBar(props: { active: string }) {
       <div className="auth-brand"><span className="brand-mark"></span>ARC-EN-CIEL Affair</div>
       <nav className="module-nav">
         {LINKS.map((link) => (
-          <a key={link.key} href={link.href} className={link.key === props.active ? 'active' : ''}>
+          <a
+            key={link.key}
+            href={link.href}
+            className={link.key + (link.key === props.active ? ' active' : '')}
+          >
             {link.label}
           </a>
         ))}

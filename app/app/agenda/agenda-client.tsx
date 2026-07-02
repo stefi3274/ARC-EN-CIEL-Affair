@@ -1,14 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import TabBar from '@/components/tab-bar';
-import PanelLoading from '@/components/panel-loading';
-
-const EventsPanel = dynamic(() => import('./events-panel'), { loading: () => <PanelLoading />, ssr: false });
-const PetitionsPanel = dynamic(() => import('./petitions-panel'), { loading: () => <PanelLoading />, ssr: false });
-const ClassifiedsPanel = dynamic(() => import('./classifieds-panel'), { loading: () => <PanelLoading />, ssr: false });
+import EventsPanel from './events-panel';
+import PetitionsPanel from './petitions-panel';
+import ClassifiedsPanel from './classifieds-panel';
 
 type Props = {
   currentUserId: string;
@@ -33,8 +30,8 @@ export default function AgendaClient(props: Props) {
         active={tab}
         onChange={setTab}
         tabs={[
-          { key: 'evenements', label: 'Evenements' },
-          { key: 'petitions', label: 'Petitions' },
+          { key: 'evenements', label: 'Événements' },
+          { key: 'petitions', label: 'Pétitions' },
           { key: 'annonces', label: 'Annonces' },
         ]}
       />

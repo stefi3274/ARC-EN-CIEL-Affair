@@ -28,7 +28,7 @@ export default function SwipeView(props: { profiles: Profile[]; onSwipe: (userId
             </div>
           </div>
         ) : (
-          <p className="empty-state">Plus de profils pour l instant.</p>
+          <p className="empty-state">Plus de profils pour l'instant.</p>
         )}
       </div>
       <div className="swipe-actions">

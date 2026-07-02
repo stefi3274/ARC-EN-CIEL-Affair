@@ -65,7 +65,7 @@ export default function EventsPanel(props: { events: any[]; goingSet: Set<string
   return (
     <div>
       <button type="button" onClick={() => setShowForm((v) => !v)} style={{ marginBottom: 20 }}>
-        {showForm ? 'Annuler' : '+ Creer un evenement'}
+        {showForm ? 'Annuler' : "+ Créer un événement"}
       </button>
 
       {showForm && (
@@ -83,12 +83,12 @@ export default function EventsPanel(props: { events: any[]; goingSet: Set<string
           <input id="evDate" type="datetime-local" required value={startsAt} onChange={(e) => setStartsAt(e.target.value)} style={{ marginBottom: 16 }} />
 
           <button type="submit" disabled={saving || !title || !startsAt}>
-            {saving ? 'Creation...' : 'Publier l evenement'}
+            {saving ? 'Création...' : "Publiér l'événement"}
           </button>
         </form>
       )}
 
-      {props.events.length === 0 && <p className="empty-state">Aucun evenement pour le moment.</p>}
+      {props.events.length === 0 && <p className="empty-state">Aucun événement pour le moment.</p>}
 
       {props.events.map((ev) => {
         const isGoing = props.goingSet.has(ev.id);

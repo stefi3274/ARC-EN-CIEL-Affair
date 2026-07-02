@@ -61,7 +61,7 @@ export default function ListingsBrowser(props: {
               disabled={hasApplied || applying === listing.id}
               onClick={() => apply(listing.id)}
             >
-              {hasApplied ? 'Candidature envoyee' : applying === listing.id ? 'Envoi...' : 'Postuler'}
+              {hasApplied ? 'Candidature envoyée' : applying === listing.id ? 'Envoi...' : 'Postuler'}
             </button>
           </div>
         );

@@ -1,14 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import TabBar from '@/components/tab-bar';
-import PanelLoading from '@/components/panel-loading';
-
-const ListingsBrowser = dynamic(() => import('./listings-browser'), { loading: () => <PanelLoading />, ssr: false });
-const CvManager = dynamic(() => import('./cv-manager'), { loading: () => <PanelLoading />, ssr: false });
-const RecruteurPanel = dynamic(() => import('./recruteur-panel'), { loading: () => <PanelLoading />, ssr: false });
+import ListingsBrowser from './listings-browser';
+import CvManager from './cv-manager';
+import RecruteurPanel from './recruteur-panel';
 
 type Props = {
   currentUserId: string;

@@ -27,7 +27,7 @@ export default function CvManager(props: { myCv: any; onSaved: () => void }) {
 
     if (uploadResult.error) {
       setUploading(false);
-      setError('Envoi impossible. Verifie que le fichier est un PDF.');
+      setError("Envoi impossible. Vérifie que le fichier est un PDF.");
       return;
     }
 
@@ -49,9 +49,9 @@ export default function CvManager(props: { myCv: any; onSaved: () => void }) {
   return (
     <div className="cv-box">
       {props.myCv ? (
-        <p className="cv-status">CV deja enregistre. Tu peux le remplacer ci-dessous.</p>
+        <p className="cv-status">CV déjà enregistré. Tu peux le remplacer ci-dessous.</p>
       ) : (
-        <p className="cv-status">Aucun CV enregistre pour l instant.</p>
+        <p className="cv-status">Aucun CV enregistré pour l'instant.</p>
       )}
 
       <label htmlFor="headline">Titre / poste recherche (optionnel)</label>
