@@ -14,7 +14,7 @@ export default function LoginPage() {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin + '/auth/callback',
+        redirectTo: `${window.location.origin}/auth/callback`,
       },
     });
   }
@@ -25,16 +25,16 @@ export default function LoginPage() {
     setLoading(true);
 
     const supabase = createClient();
-    const result = await supabase.auth.signInWithOtp({
-      email: email,
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
       options: {
-        emailRedirectTo: window.location.origin + '/auth/callback',
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
     });
 
     setLoading(false);
-    if (result.error) {
-      setError('Envoi impossible. Verifie ton adresse et reessaie.');
+    if (error) {
+      setError("Impossible d'envoyer le lien. Vérifie l'adresse et réessaie.");
       return;
     }
     setSent(true);
@@ -49,13 +49,13 @@ export default function LoginPage() {
 
         {sent ? (
           <div className="success-box">
-            Un lien de connexion a ete envoye a <strong>{email}</strong>.
-            Ouvre-le depuis ce meme appareil pour continuer.
+            Un lien de connexion a été envoyé à <strong>{email}</strong>.
+            Ouvre-le depuis ce même appareil pour continuer.
           </div>
         ) : (
           <>
             <h1>Entrer</h1>
-            <p className="sub">Rejoins la communaute en un clic.</p>
+            <p className="sub">Rejoins la communauté en un clic.</p>
 
             <button type="button" onClick={handleGoogleSignIn} style={{ marginBottom: 28 }}>
               Continuer avec Google
@@ -76,10 +76,10 @@ export default function LoginPage() {
               />
               {error && <p className="error-msg">{error}</p>}
               <button type="submit" disabled={loading}>
-                {loading ? 'Envoi en cours' : 'Recevoir le lien'}
+                {loading ? 'Envoi en cours…' : 'Recevoir le lien'}
               </button>
             </form>
-            <p className="hint">Les modules ne partagent aucune donnee entre eux.</p>
+            <p className="hint">Aucune donnée n'est partagée entre les modules de l'app.</p>
           </>
         )}
       </div>

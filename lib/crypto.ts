@@ -1,4 +1,5 @@
 import sodium from 'libsodium-wrappers';
+
 let ready = false;
 async function ensureReady() {
   if (!ready) {

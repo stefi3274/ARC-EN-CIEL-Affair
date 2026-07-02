@@ -1,0 +1,50 @@
+'use client';
+
+import { useState } from 'react';
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
+import TabBar from '@/components/tab-bar';
+import PanelLoading from '@/components/panel-loading';
+
+const Browser = dynamic(() => import('./browser'), { loading: () => <PanelLoading />, ssr: false });
+const SellForm = dynamic(() => import('./sell-form'), { loading: () => <PanelLoading />, ssr: false });
+const MyListings = dynamic(() => import('./my-listings'), { loading: () => <PanelLoading />, ssr: false });
+
+type Props = {
+  currentUserId: string;
+  categories: any[];
+  listings: any[];
+  myListings: any[];
+};
+
+export default function MarketClient(props: Props) {
+  const router = useRouter();
+  const [tab, setTab] = useState('parcourir');
+
+  return (
+    <main className="market-main">
+      <TabBar
+        wrapperClass="market-tabs"
+        active={tab}
+        onChange={setTab}
+        tabs={[
+          { key: 'parcourir', label: 'Parcourir' },
+          { key: 'vendre', label: 'Vendre' },
+          { key: 'annonces', label: 'Mes annonces' },
+        ]}
+      />
+
+      {tab === 'parcourir' && <Browser listings={props.listings} />}
+      {tab === 'vendre' && (
+        <SellForm
+          categories={props.categories}
+          onCreated={() => {
+            router.refresh();
+            setTab('annonces');
+          }}
+        />
+      )}
+      {tab === 'annonces' && <MyListings myListings={props.myListings} onChanged={() => router.refresh()} />}
+    </main>
+  );
+}
