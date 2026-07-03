@@ -11,7 +11,7 @@ export default async function ProfilPage() {
   const { data: profile } = await supabase
     .schema('core')
     .from('profiles')
-    .select('display_name, pronouns, pronouns_visible, theme_accent, theme_font, theme_mode')
+    .select('display_name, pronouns, pronouns_visible, avatar_url, theme_accent, theme_font, theme_mode')
     .eq('id', user.id)
     .maybeSingle();
 
@@ -25,6 +25,7 @@ export default async function ProfilPage() {
           displayName={profile.display_name}
           pronouns={profile.pronouns ?? ''}
           pronounsVisible={profile.pronouns_visible}
+          avatarUrl={profile.avatar_url}
           themeAccent={profile.theme_accent ?? 'gold'}
           themeFont={profile.theme_font ?? 'editorial'}
           themeMode={profile.theme_mode ?? 'dark'}

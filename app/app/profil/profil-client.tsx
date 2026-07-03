@@ -17,6 +17,7 @@ export default function ProfilClient(props: {
   displayName: string;
   pronouns: string;
   pronounsVisible: boolean;
+  avatarUrl: string | null;
   themeAccent: string;
   themeFont: string;
   themeMode: string;
@@ -25,6 +26,8 @@ export default function ProfilClient(props: {
   const [displayName, setDisplayName] = useState(props.displayName);
   const [pronouns, setPronouns] = useState(props.pronouns);
   const [pronounsVisible, setPronounsVisible] = useState(props.pronounsVisible);
+  const [avatarUrl, setAvatarUrl] = useState(props.avatarUrl);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [accent, setAccent] = useState(props.themeAccent);
   const [font, setFont] = useState(props.themeFont);
   const [mode, setMode] = useState(props.themeMode);
@@ -35,6 +38,30 @@ export default function ProfilClient(props: {
   const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
+
+  async function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingAvatar(true);
+
+    const supabase = createClient();
+    const userResult = await supabase.auth.getUser();
+    const user = userResult.data.user;
+    if (!user) {
+      setUploadingAvatar(false);
+      return;
+    }
+
+    const path = user.id + '/avatar-' + Date.now() + '.jpg';
+    const uploadResult = await supabase.storage.from('avatars').upload(path, file, { upsert: true });
+
+    setUploadingAvatar(false);
+
+    if (uploadResult.error) return;
+
+    const publicUrl = supabase.storage.from('avatars').getPublicUrl(path).data.publicUrl;
+    setAvatarUrl(publicUrl);
+  }
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
@@ -56,6 +83,7 @@ export default function ProfilClient(props: {
         display_name: displayName,
         pronouns: pronouns || null,
         pronouns_visible: pronounsVisible,
+        avatar_url: avatarUrl,
         theme_accent: accent,
         theme_font: font,
         theme_mode: mode,
@@ -97,6 +125,20 @@ export default function ProfilClient(props: {
       <form onSubmit={handleSave}>
         <h1>Ton profil</h1>
         <p className="sub">Ton identite et l'apparence de l'app, rien qu'a toi.</p>
+
+        <div className="photo-row" style={{ marginBottom: 24 }}>
+          <div
+            className="photo-thumb"
+            style={{
+              width: 84, height: 84,
+              backgroundImage: avatarUrl ? 'url(' + avatarUrl + ')' : undefined,
+            }}
+          ></div>
+          <label className="photo-upload-btn" style={{ width: 84, height: 84, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+            {uploadingAvatar ? '...' : avatarUrl ? 'Changer' : '+ Photo'}
+            <input type="file" accept="image/*" onChange={handleAvatarUpload} style={{ display: 'none' }} />
+          </label>
+        </div>
 
         <label htmlFor="displayName">Nom affiche</label>
         <input

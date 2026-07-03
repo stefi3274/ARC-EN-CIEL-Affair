@@ -15,7 +15,11 @@ type Profile = {
   publicKey: string | null;
   photoUrl: string | null;
   statusText: string | null;
+  statusPhotoUrl: string | null;
   statusExpiresAt: string | null;
+  talents: string | null;
+  dreams: string | null;
+  goals: string | null;
 };
 
 type Props = {
@@ -26,6 +30,9 @@ type Props = {
   myAge: number | null;
   myVisible: boolean;
   myPhotos: string[];
+  myTalents: string;
+  myDreams: string;
+  myGoals: string;
 };
 
 export default function Discovery(props: Props) {
@@ -53,7 +60,7 @@ export default function Discovery(props: Props) {
         .maybeSingle();
 
       if (match) {
-        setMatchMessage("Match ! Vous vous êtes plu mutuellement.");
+        setMatchMessage('Match ! Vous vous etes plu mutuellement.');
         setTimeout(() => setMatchMessage(null), 3000);
       }
     }
@@ -69,6 +76,9 @@ export default function Discovery(props: Props) {
           age={props.myAge}
           visible={props.myVisible}
           photos={props.myPhotos}
+          talents={props.myTalents}
+          dreams={props.myDreams}
+          goals={props.myGoals}
           hasProfile={props.hasDatingProfile}
           onSaved={() => {
             router.refresh();

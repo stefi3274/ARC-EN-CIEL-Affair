@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { formatDate } from '@/lib/format-date';
 
 export default function RecruteurPanel(props: {
   myCompany: any;
@@ -168,7 +169,7 @@ export default function RecruteurPanel(props: {
           <div key={app.id} className="applicant-row">
             <div>
               <div style={{ fontSize: '0.9rem' }}>{app.applicantName}</div>
-              <div className="post-date">{new Date(app.created_at).toLocaleDateString('fr-FR')}</div>
+              <div className="post-date">{formatDate(app.created_at)}</div>
             </div>
             {app.cvPath ? (
               <button type="button" onClick={() => viewCv(app.applicant_id, app.cvPath)}>

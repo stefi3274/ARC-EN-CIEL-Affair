@@ -10,7 +10,11 @@ type DiscoverRow = {
   age: number | null;
   public_key: string | null;
   status_text: string | null;
+  status_media_url: string | null;
   status_expires_at: string | null;
+  talents: string | null;
+  dreams: string | null;
+  goals: string | null;
 };
 
 export default async function RencontrePage() {
@@ -30,7 +34,7 @@ export default async function RencontrePage() {
   const { data: myDatingProfile } = await supabase
     .schema('dating')
     .from('profiles')
-    .select('user_id, bio, photos, age, visible, public_key')
+    .select('user_id, bio, photos, age, visible, public_key, talents, dreams, goals')
     .eq('user_id', user.id)
     .maybeSingle();
 
@@ -50,6 +54,12 @@ export default async function RencontrePage() {
         photoUrl = signed.data?.signedUrl ?? null;
       }
 
+      let statusPhotoUrl: string | null = null;
+      if (row.status_media_url) {
+        const signedStatus = await supabase.storage.from('dating-photos').createSignedUrl(row.status_media_url, 300);
+        statusPhotoUrl = signedStatus.data?.signedUrl ?? null;
+      }
+
       return {
         userId: row.user_id,
         bio: row.bio,
@@ -57,7 +67,11 @@ export default async function RencontrePage() {
         publicKey: row.public_key,
         photoUrl,
         statusText: row.status_text,
+        statusPhotoUrl,
         statusExpiresAt: row.status_expires_at,
+        talents: row.talents,
+        dreams: row.dreams,
+        goals: row.goals,
       };
     })
   );
@@ -74,6 +88,9 @@ export default async function RencontrePage() {
         myAge={myDatingProfile?.age ?? null}
         myVisible={myDatingProfile?.visible ?? true}
         myPhotos={(myDatingProfile?.photos as string[]) ?? []}
+        myTalents={myDatingProfile?.talents ?? ''}
+        myDreams={myDatingProfile?.dreams ?? ''}
+        myGoals={myDatingProfile?.goals ?? ''}
       />
     </div>
   );

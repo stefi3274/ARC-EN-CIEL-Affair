@@ -6,6 +6,10 @@ type Profile = {
   age: number | null;
   photoUrl: string | null;
   statusText: string | null;
+  statusPhotoUrl: string | null;
+  talents: string | null;
+  dreams: string | null;
+  goals: string | null;
 };
 
 export default function SwipeView(props: { profiles: Profile[]; onSwipe: (userId: string, liked: boolean) => void }) {
@@ -18,13 +22,16 @@ export default function SwipeView(props: { profiles: Profile[]; onSwipe: (userId
           <div className="swipe-card">
             <div
               className="swipe-photo"
-              style={current.photoUrl ? { backgroundImage: 'url(' + current.photoUrl + ')' } : undefined}
+              style={{ backgroundImage: 'url(' + (current.statusPhotoUrl || current.photoUrl || '') + ')' }}
             >
               {current.statusText && <span className="swipe-status">{current.statusText}</span>}
             </div>
             <div className="swipe-info">
               <div className="swipe-name">{current.age ? current.age + ' ans' : 'Profil'}</div>
               <p className="swipe-bio">{current.bio || 'Pas de bio'}</p>
+              {current.talents && <p className="swipe-bio">Talent : {current.talents}</p>}
+              {current.dreams && <p className="swipe-bio">Reve : {current.dreams}</p>}
+              {current.goals && <p className="swipe-bio">Cherche : {current.goals}</p>}
             </div>
           </div>
         ) : (

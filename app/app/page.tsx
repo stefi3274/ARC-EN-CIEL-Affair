@@ -1,3 +1,4 @@
+import { formatDateTime } from '@/lib/format-date';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import TopBar from '@/components/top-bar';
@@ -59,7 +60,7 @@ export default async function AppHome() {
                   <div className="post-avatar"></div>
                   <div>
                     <div className="post-author">{author ? author.display_name : 'Un membre'}</div>
-                    <div className="post-date">{new Date(post.created_at).toLocaleString('fr-FR')}</div>
+                    <div className="post-date">{formatDateTime(post.created_at)}</div>
                   </div>
                 </div>
                 <p className="post-content">{post.content}</p>

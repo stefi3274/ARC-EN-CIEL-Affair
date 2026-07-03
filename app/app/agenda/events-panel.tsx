@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { formatDateTime } from '@/lib/format-date';
 
 export default function EventsPanel(props: { events: any[]; goingSet: Set<string>; onChanged: () => void }) {
   const [showForm, setShowForm] = useState(false);
@@ -95,7 +96,7 @@ export default function EventsPanel(props: { events: any[]; goingSet: Set<string
         return (
           <div key={ev.id} className="event-card">
             <div className="event-cover" style={ev.cover_url ? { backgroundImage: 'url(' + ev.cover_url + ')' } : undefined}></div>
-            <div className="event-date">{new Date(ev.starts_at).toLocaleString('fr-FR')}</div>
+            <div className="event-date">{formatDateTime(ev.starts_at)}</div>
             <div className="event-title">{ev.title}</div>
             {ev.location && <div className="event-location">{ev.location}</div>}
             <button

@@ -246,6 +246,10 @@ body.font-modern h1{
   font-size:0.76rem; color:var(--ivory-dim);
   overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
 }
+.profile-tile .tile-tag{
+  font-size:0.7rem; color:var(--rose); margin-top:4px;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
 
 .swipe-stack{ position:relative; height:520px; }
 .swipe-card{

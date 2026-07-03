@@ -9,6 +9,9 @@ type Props = {
   age: number | null;
   visible: boolean;
   photos: string[];
+  talents: string;
+  dreams: string;
+  goals: string;
   hasProfile: boolean;
   onSaved: () => void;
 };
@@ -18,10 +21,16 @@ export default function ProfilForm(props: Props) {
   const [age, setAge] = useState(props.age ? String(props.age) : '');
   const [visible, setVisible] = useState(props.visible);
   const [photos, setPhotos] = useState<string[]>(props.photos || []);
-  const [statusText, setStatusText] = useState('');
+  const [talents, setTalents] = useState(props.talents);
+  const [dreams, setDreams] = useState(props.dreams);
+  const [goals, setGoals] = useState(props.goals);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const [statusText, setStatusText] = useState('');
+  const [statusPhoto, setStatusPhoto] = useState<string | null>(null);
+  const [uploadingStatusPhoto, setUploadingStatusPhoto] = useState(false);
   const [statusSent, setStatusSent] = useState(false);
 
   async function handlePhotoUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -44,11 +53,34 @@ export default function ProfilForm(props: Props) {
     setUploading(false);
 
     if (uploadResult.error) {
-      setError("Envoi de la photo impossible. Réessaie.");
+      setError('Envoi de la photo impossible. Reessaie.');
       return;
     }
 
     setPhotos((prev) => [...prev, path]);
+  }
+
+  async function handleStatusPhotoUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingStatusPhoto(true);
+
+    const supabase = createClient();
+    const userResult = await supabase.auth.getUser();
+    const user = userResult.data.user;
+    if (!user) {
+      setUploadingStatusPhoto(false);
+      return;
+    }
+
+    const path = user.id + '/status-' + Date.now() + '-' + file.name;
+    const uploadResult = await supabase.storage.from('dating-photos').upload(path, file);
+
+    setUploadingStatusPhoto(false);
+
+    if (uploadResult.error) return;
+
+    setStatusPhoto(path);
   }
 
   async function handleSave(e: React.FormEvent) {
@@ -61,7 +93,7 @@ export default function ProfilForm(props: Props) {
     const user = userResult.data.user;
 
     if (!user) {
-      setError("Session expirée, reconnecte-toi.");
+      setError('Session expiree, reconnecte-toi.');
       setSaving(false);
       return;
     }
@@ -84,13 +116,16 @@ export default function ProfilForm(props: Props) {
         age: age ? parseInt(age, 10) : null,
         visible,
         photos,
+        talents: talents || null,
+        dreams: dreams || null,
+        goals: goals || null,
         public_key: publicKey,
       });
 
     setSaving(false);
 
     if (result.error) {
-      setError("Enregistrement impossible. Réessaie.");
+      setError('Enregistrement impossible. Reessaie.');
       return;
     }
 
@@ -98,7 +133,7 @@ export default function ProfilForm(props: Props) {
   }
 
   async function handlePostStatus() {
-    if (!statusText.trim()) return;
+    if (!statusText.trim() && !statusPhoto) return;
     const supabase = createClient();
     const userResult = await supabase.auth.getUser();
     const user = userResult.data.user;
@@ -107,9 +142,14 @@ export default function ProfilForm(props: Props) {
     await supabase
       .schema('dating')
       .from('statuses')
-      .insert({ user_id: user.id, content: statusText.trim() });
+      .insert({
+        user_id: user.id,
+        content: statusText.trim() || '',
+        media_url: statusPhoto,
+      });
 
     setStatusText('');
+    setStatusPhoto(null);
     setStatusSent(true);
     setTimeout(() => setStatusSent(false), 2500);
   }
@@ -118,7 +158,8 @@ export default function ProfilForm(props: Props) {
     <div className="profil-form">
       <h1>Ton profil Rencontre</h1>
       <p className="sub">
-        Tout est optionnel. Rien ici n'est visible dans les autres modules de l'app.
+        Tout est optionnel. Rien ici n'est visible dans les autres modules de l'app. Ces
+        informations aident les autres a mieux te connaitre avant de matcher.
       </p>
 
       <form onSubmit={handleSave}>
@@ -129,6 +170,33 @@ export default function ProfilForm(props: Props) {
           value={bio}
           onChange={(e) => setBio(e.target.value)}
           placeholder="Parle un peu de toi (optionnel)"
+        />
+
+        <label htmlFor="talents">Talents</label>
+        <textarea
+          id="talents"
+          rows={2}
+          value={talents}
+          onChange={(e) => setTalents(e.target.value)}
+          placeholder="Ce que tu sais bien faire (optionnel)"
+        />
+
+        <label htmlFor="dreams">Reves</label>
+        <textarea
+          id="dreams"
+          rows={2}
+          value={dreams}
+          onChange={(e) => setDreams(e.target.value)}
+          placeholder="Ce dont tu reves (optionnel)"
+        />
+
+        <label htmlFor="goals">Buts</label>
+        <textarea
+          id="goals"
+          rows={2}
+          value={goals}
+          onChange={(e) => setGoals(e.target.value)}
+          placeholder="Ce que tu cherches en ce moment (optionnel)"
         />
 
         <label htmlFor="age">Age (optionnel)</label>
@@ -154,7 +222,7 @@ export default function ProfilForm(props: Props) {
         </div>
 
         <div className="toggle-row">
-          <span>Visible dans la découverte</span>
+          <span>Visible dans la decouverte</span>
           <input type="checkbox" checked={visible} onChange={(e) => setVisible(e.target.checked)} />
         </div>
 
@@ -171,11 +239,20 @@ export default function ProfilForm(props: Props) {
           type="text"
           value={statusText}
           onChange={(e) => setStatusText(e.target.value)}
-          placeholder="Ex: dispo ce soir pour un café"
+          placeholder="Ex: dispo ce soir pour un cafe"
           style={{ marginBottom: 12 }}
         />
-        <button type="button" onClick={handlePostStatus} disabled={!statusText.trim()}>
-          {statusSent ? 'Publié' : 'Publiér le statut'}
+
+        <div className="photo-row" style={{ marginBottom: 12 }}>
+          {statusPhoto && <div className="photo-thumb" title={statusPhoto}></div>}
+          <label className="photo-upload-btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+            {uploadingStatusPhoto ? '...' : '+ Photo'}
+            <input type="file" accept="image/*" onChange={handleStatusPhotoUpload} style={{ display: 'none' }} />
+          </label>
+        </div>
+
+        <button type="button" onClick={handlePostStatus} disabled={!statusText.trim() && !statusPhoto}>
+          {statusSent ? 'Publie' : 'Publier le statut'}
         </button>
       </div>
     </div>
