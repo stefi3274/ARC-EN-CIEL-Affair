@@ -19,18 +19,26 @@ type Report = {
 export default function ModerationPanel(props: { reports: Report[] }) {
   const [reports, setReports] = useState(props.reports);
   const [updating, setUpdating] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   async function updateStatus(reportId: string, status: string) {
     setUpdating(reportId);
+    setError(null);
     const supabase = createClient();
 
-    await supabase
+    const result = await supabase
       .schema('moderation')
       .from('reports')
       .update({ status })
       .eq('id', reportId);
 
     setUpdating(null);
+
+    if (result.error) {
+      setError('Mise a jour impossible : ' + result.error.message);
+      return;
+    }
+
     setReports((prev) => prev.map((r) => (r.id === reportId ? { ...r, status } : r)));
   }
 
@@ -40,6 +48,7 @@ export default function ModerationPanel(props: { reports: Report[] }) {
 
   return (
     <div>
+      {error && <p className="error-msg">{error}</p>}
       {reports.map((r) => (
         <div key={r.id} className="moderation-card">
           <div className="moderation-meta">

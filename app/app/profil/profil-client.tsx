@@ -33,6 +33,7 @@ export default function ProfilClient(props: {
   const [mode, setMode] = useState(props.themeMode);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   const [signingOut, setSigningOut] = useState(false);
   const [confirmingDelete, setConfirmingDelete] = useState(false);
@@ -57,7 +58,10 @@ export default function ProfilClient(props: {
 
     setUploadingAvatar(false);
 
-    if (uploadResult.error) return;
+    if (uploadResult.error) {
+      setSaveError("Envoi de la photo impossible : " + uploadResult.error.message);
+      return;
+    }
 
     const publicUrl = supabase.storage.from('avatars').getPublicUrl(path).data.publicUrl;
     setAvatarUrl(publicUrl);
@@ -67,6 +71,7 @@ export default function ProfilClient(props: {
     e.preventDefault();
     setSaving(true);
     setSaved(false);
+    setSaveError(null);
 
     const supabase = createClient();
     const userResult = await supabase.auth.getUser();
@@ -76,7 +81,7 @@ export default function ProfilClient(props: {
       return;
     }
 
-    await supabase
+    const result = await supabase
       .schema('core')
       .from('profiles')
       .update({
@@ -91,6 +96,12 @@ export default function ProfilClient(props: {
       .eq('id', user.id);
 
     setSaving(false);
+
+    if (result.error) {
+      setSaveError('Enregistrement impossible : ' + result.error.message);
+      return;
+    }
+
     setSaved(true);
     router.refresh();
     setTimeout(() => setSaved(false), 2500);
@@ -211,6 +222,7 @@ export default function ProfilClient(props: {
           </div>
         </div>
 
+        {saveError && <p className="error-msg">{saveError}</p>}
         <button type="submit" disabled={saving}>
           {saved ? 'Enregistre' : saving ? 'Enregistrement...' : 'Enregistrer'}
         </button>

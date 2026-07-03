@@ -19,9 +19,11 @@ export default function ReportButton(props: { targetType: string; targetId: stri
   const [details, setDetails] = useState('');
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit() {
     setSending(true);
+    setError(null);
     const supabase = createClient();
     const userResult = await supabase.auth.getUser();
     const user = userResult.data.user;
@@ -30,7 +32,7 @@ export default function ReportButton(props: { targetType: string; targetId: stri
       return;
     }
 
-    await supabase
+    const result = await supabase
       .schema('moderation')
       .from('reports')
       .insert({
@@ -42,6 +44,12 @@ export default function ReportButton(props: { targetType: string; targetId: stri
       });
 
     setSending(false);
+
+    if (result.error) {
+      setError('Envoi impossible : ' + result.error.message);
+      return;
+    }
+
     setSent(true);
     setOpen(false);
     setTimeout(() => setSent(false), 3000);
@@ -72,6 +80,7 @@ export default function ReportButton(props: { targetType: string; targetId: stri
         onChange={(e) => setDetails(e.target.value)}
         placeholder="Details (optionnel)"
       />
+      {error && <p className="error-msg">{error}</p>}
       <div className="report-form-actions">
         <button type="button" onClick={() => setOpen(false)}>Annuler</button>
         <button type="button" onClick={handleSubmit} disabled={sending}>

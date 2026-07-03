@@ -19,21 +19,34 @@ export default function LikeButton(props: { postId: string; initialLiked: boolea
     }
 
     if (liked) {
-      await supabase
+      setLiked(false);
+      setCount((c) => Math.max(0, c - 1));
+
+      const result = await supabase
         .schema('social')
         .from('likes')
         .delete()
         .eq('post_id', props.postId)
         .eq('user_id', user.id);
-      setLiked(false);
-      setCount((c) => Math.max(0, c - 1));
+
+      if (result.error) {
+        // echec silencieux impossible : on annule le changement visuel
+        setLiked(true);
+        setCount((c) => c + 1);
+      }
     } else {
-      await supabase
+      setLiked(true);
+      setCount((c) => c + 1);
+
+      const result = await supabase
         .schema('social')
         .from('likes')
         .insert({ post_id: props.postId, user_id: user.id });
-      setLiked(true);
-      setCount((c) => c + 1);
+
+      if (result.error) {
+        setLiked(false);
+        setCount((c) => Math.max(0, c - 1));
+      }
     }
 
     setBusy(false);

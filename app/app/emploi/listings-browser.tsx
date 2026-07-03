@@ -11,6 +11,7 @@ export default function ListingsBrowser(props: {
 }) {
   const [applying, setApplying] = useState<string | null>(null);
   const [applied, setApplied] = useState<Set<string>>(new Set());
+  const [error, setError] = useState<string | null>(null);
 
   async function apply(listingId: string) {
     if (!props.hasCv) {
@@ -18,6 +19,7 @@ export default function ListingsBrowser(props: {
       return;
     }
     setApplying(listingId);
+    setError(null);
     const supabase = createClient();
     const userResult = await supabase.auth.getUser();
     const user = userResult.data.user;
@@ -26,12 +28,18 @@ export default function ListingsBrowser(props: {
       return;
     }
 
-    await supabase
+    const result = await supabase
       .schema('jobs')
       .from('applications')
       .insert({ listing_id: listingId, applicant_id: user.id });
 
     setApplying(null);
+
+    if (result.error) {
+      setError('Candidature impossible : ' + result.error.message);
+      return;
+    }
+
     setApplied((prev) => new Set(prev).add(listingId));
   }
 
@@ -41,6 +49,7 @@ export default function ListingsBrowser(props: {
 
   return (
     <div>
+      {error && <p className="error-msg">{error}</p>}
       {props.listings.map((listing) => {
         const hasApplied = props.appliedListingIds.has(listing.id) || applied.has(listing.id);
         return (

@@ -21,6 +21,7 @@ export default function ConversationClient(props: {
   const [messages, setMessages] = useState<Message[] | null>(null);
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState<string | null>(null);
   const [keyError, setKeyError] = useState(false);
   const myPrivateKeyRef = useRef<Uint8Array | null>(null);
   const theirPublicKeyRef = useRef<Uint8Array | null>(null);
@@ -108,17 +109,24 @@ export default function ConversationClient(props: {
     e.preventDefault();
     if (!input.trim() || !myPrivateKeyRef.current || !theirPublicKeyRef.current) return;
     setSending(true);
+    setSendError(null);
 
     const supabase = createClient();
     const ciphertext = await encryptMessage(input.trim(), myPrivateKeyRef.current, theirPublicKeyRef.current);
 
-    await supabase
+    const result = await supabase
       .schema('dating')
       .from('messages')
       .insert({ match_id: props.matchId, sender_id: props.currentUserId, ciphertext });
 
-    setInput('');
     setSending(false);
+
+    if (result.error) {
+      setSendError("Message non envoye : " + result.error.message);
+      return;
+    }
+
+    setInput('');
   }
 
   return (
@@ -158,6 +166,8 @@ export default function ConversationClient(props: {
         ))}
         <div ref={bottomRef}></div>
       </div>
+
+      {sendError && <p className="error-msg" style={{ padding: '0 5vw' }}>{sendError}</p>}
 
       <form onSubmit={handleSend} className="conversation-composer">
         <input

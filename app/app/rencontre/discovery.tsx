@@ -46,10 +46,16 @@ export default function Discovery(props: Props) {
   async function handleSwipe(targetUserId: string, liked: boolean) {
     const supabase = createClient();
 
-    await supabase
+    const swipeResult = await supabase
       .schema('dating')
       .from('swipes')
       .insert({ swiper_id: props.currentUserId, swiped_id: targetUserId, liked });
+
+    if (swipeResult.error) {
+      setMatchMessage('Action impossible : ' + swipeResult.error.message);
+      setTimeout(() => setMatchMessage(null), 4000);
+      return;
+    }
 
     if (liked) {
       const { data: match } = await supabase

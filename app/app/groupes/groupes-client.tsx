@@ -13,10 +13,12 @@ export default function GroupesClient(props: { groups: any[]; myGroupIds: string
   const [saving, setSaving] = useState(false);
   const [joined, setJoined] = useState(new Set(props.myGroupIds));
   const [joining, setJoining] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
+    setError(null);
     const supabase = createClient();
     const userResult = await supabase.auth.getUser();
     const user = userResult.data.user;
@@ -32,7 +34,13 @@ export default function GroupesClient(props: { groups: any[]; myGroupIds: string
       .select('id')
       .single();
 
-    if (!result.error && result.data) {
+    if (result.error) {
+      setSaving(false);
+      setError('Creation impossible : ' + result.error.message);
+      return;
+    }
+
+    if (result.data) {
       await supabase.schema('social').from('group_members').insert({ group_id: result.data.id, user_id: user.id });
     }
 
@@ -46,6 +54,7 @@ export default function GroupesClient(props: { groups: any[]; myGroupIds: string
 
   async function handleJoin(groupId: string) {
     setJoining(groupId);
+    setError(null);
     const supabase = createClient();
     const userResult = await supabase.auth.getUser();
     const user = userResult.data.user;
@@ -54,9 +63,15 @@ export default function GroupesClient(props: { groups: any[]; myGroupIds: string
       return;
     }
 
-    await supabase.schema('social').from('group_members').insert({ group_id: groupId, user_id: user.id });
+    const result = await supabase.schema('social').from('group_members').insert({ group_id: groupId, user_id: user.id });
 
     setJoining(null);
+
+    if (result.error) {
+      setError('Adhesion impossible : ' + result.error.message);
+      return;
+    }
+
     setJoined((prev) => new Set(prev).add(groupId));
   }
 
@@ -82,6 +97,8 @@ export default function GroupesClient(props: { groups: any[]; myGroupIds: string
           </button>
         </form>
       )}
+
+      {error && <p className="error-msg">{error}</p>}
 
       {props.groups.length === 0 && <p className="empty-state">Aucun groupe pour le moment.</p>}
 

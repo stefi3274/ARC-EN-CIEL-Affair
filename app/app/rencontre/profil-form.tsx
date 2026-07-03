@@ -139,7 +139,7 @@ export default function ProfilForm(props: Props) {
     const user = userResult.data.user;
     if (!user) return;
 
-    await supabase
+    const result = await supabase
       .schema('dating')
       .from('statuses')
       .insert({
@@ -147,6 +147,11 @@ export default function ProfilForm(props: Props) {
         content: statusText.trim() || '',
         media_url: statusPhoto,
       });
+
+    if (result.error) {
+      setError('Statut impossible a publier : ' + result.error.message);
+      return;
+    }
 
     setStatusText('');
     setStatusPhoto(null);
@@ -254,6 +259,7 @@ export default function ProfilForm(props: Props) {
         <button type="button" onClick={handlePostStatus} disabled={!statusText.trim() && !statusPhoto}>
           {statusSent ? 'Publie' : 'Publier le statut'}
         </button>
+        {error && <p className="error-msg">{error}</p>}
       </div>
     </div>
   );

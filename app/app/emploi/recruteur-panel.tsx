@@ -20,10 +20,13 @@ export default function RecruteurPanel(props: {
   const [listingRemote, setListingRemote] = useState(false);
   const [listingContract, setListingContract] = useState('');
   const [creatingListing, setCreatingListing] = useState(false);
+  const [companyError, setCompanyError] = useState<string | null>(null);
+  const [listingError, setListingError] = useState<string | null>(null);
 
   async function createCompany(e: React.FormEvent) {
     e.preventDefault();
     setCreatingCompany(true);
+    setCompanyError(null);
     const supabase = createClient();
     const userResult = await supabase.auth.getUser();
     const user = userResult.data.user;
@@ -32,12 +35,18 @@ export default function RecruteurPanel(props: {
       return;
     }
 
-    await supabase
+    const result = await supabase
       .schema('jobs')
       .from('companies')
       .insert({ owner_id: user.id, name: companyName, description: companyDesc || null });
 
     setCreatingCompany(false);
+
+    if (result.error) {
+      setCompanyError('Creation impossible : ' + result.error.message);
+      return;
+    }
+
     props.onChanged();
   }
 
@@ -45,9 +54,10 @@ export default function RecruteurPanel(props: {
     e.preventDefault();
     if (!props.myCompany) return;
     setCreatingListing(true);
+    setListingError(null);
     const supabase = createClient();
 
-    await supabase
+    const result = await supabase
       .schema('jobs')
       .from('listings')
       .insert({
@@ -60,6 +70,12 @@ export default function RecruteurPanel(props: {
       });
 
     setCreatingListing(false);
+
+    if (result.error) {
+      setListingError('Publication impossible : ' + result.error.message);
+      return;
+    }
+
     setListingTitle('');
     setListingDesc('');
     setListingLocation('');
@@ -102,8 +118,9 @@ export default function RecruteurPanel(props: {
             onChange={(e) => setCompanyDesc(e.target.value)}
             style={{ marginBottom: 16 }}
           />
+          {companyError && <p className="error-msg">{companyError}</p>}
           <button type="submit" disabled={creatingCompany || !companyName}>
-            {creatingCompany ? 'Création...' : "Créer l'entreprise"}
+            {creatingCompany ? 'Creation...' : "Creer l'entreprise"}
           </button>
         </form>
       </div>
@@ -114,7 +131,7 @@ export default function RecruteurPanel(props: {
     <div>
       <div className="cv-box">
         <h1>{props.myCompany.name}</h1>
-        <p className="sub">Publiér une nouvelle offre</p>
+        <p className="sub">Publier une nouvelle offre</p>
         <form onSubmit={createListing}>
           <label htmlFor="listingTitle">Titre du poste</label>
           <input
@@ -154,8 +171,9 @@ export default function RecruteurPanel(props: {
             <span>Remote</span>
             <input type="checkbox" checked={listingRemote} onChange={(e) => setListingRemote(e.target.checked)} />
           </div>
+          {listingError && <p className="error-msg">{listingError}</p>}
           <button type="submit" disabled={creatingListing || !listingTitle}>
-            {creatingListing ? 'Publication...' : "Publiér l'offre"}
+            {creatingListing ? 'Publication...' : "Publier l'offre"}
           </button>
         </form>
       </div>
