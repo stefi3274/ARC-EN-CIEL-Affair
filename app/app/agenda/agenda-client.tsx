@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import TabBar from '@/components/tab-bar';
 import EventsPanel from './events-panel';
-import PetitionsPanel from './pétitions-panel';
+import PetitionsPanel from './petitions-panel';
 import ClassifiedsPanel from './classifieds-panel';
 
 type Props = {
@@ -12,7 +12,7 @@ type Props = {
   canSignPetitions: boolean;
   events: any[];
   myRsvps: any[];
-  pétitions: any[];
+  petitions: any[];
   signatureCounts: Record<string, number>;
   mySignedIds: string[];
   classifieds: any[];
@@ -20,7 +20,7 @@ type Props = {
 
 export default function AgendaClient(props: Props) {
   const router = useRouter();
-  const [tab, setTab] = useState('événements');
+  const [tab, setTab] = useState('evenements');
   const goingSet = new Set(props.myRsvps.filter((r) => r.status === 'going').map((r) => r.event_id));
 
   return (
@@ -30,18 +30,18 @@ export default function AgendaClient(props: Props) {
         active={tab}
         onChange={setTab}
         tabs={[
-          { key: 'événements', label: 'Événements' },
-          { key: 'pétitions', label: 'Pétitions' },
+          { key: 'evenements', label: 'Événements' },
+          { key: 'petitions', label: 'Pétitions' },
           { key: 'annonces', label: 'Annonces' },
         ]}
       />
 
-      {tab === 'événements' && (
+      {tab === 'evenements' && (
         <EventsPanel events={props.events} goingSet={goingSet} onChanged={() => router.refresh()} />
       )}
-      {tab === 'pétitions' && (
+      {tab === 'petitions' && (
         <PetitionsPanel
-          pétitions={props.pétitions}
+          petitions={props.petitions}
           signatureCounts={props.signatureCounts}
           mySignedIds={new Set(props.mySignedIds)}
           canSign={props.canSignPetitions}

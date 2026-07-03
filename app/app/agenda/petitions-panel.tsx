@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 
 export default function PetitionsPanel(props: {
-  pétitions: any[];
+  petitions: any[];
   signatureCounts: Record<string, number>;
   mySignedIds: Set<string>;
   canSign: boolean;
@@ -34,7 +34,7 @@ export default function PetitionsPanel(props: {
 
     const result = await supabase
       .schema('events')
-      .from('pétitions')
+      .from('petitions')
       .insert({
         creator_id: user.id,
         title,
@@ -105,9 +105,9 @@ export default function PetitionsPanel(props: {
         </form>
       )}
 
-      {props.pétitions.length === 0 && <p className="empty-state">Aucune pétition pour le moment.</p>}
+      {props.petitions.length === 0 && <p className="empty-state">Aucune pétition pour le moment.</p>}
 
-      {props.pétitions.map((pet) => {
+      {props.petitions.map((pet) => {
         const count = props.signatureCounts[pet.id] ?? 0;
         const percent = Math.min(100, Math.round((count / (pet.goal_signatures || 1)) * 100));
         const alreadySigned = props.mySignedIds.has(pet.id);
@@ -116,10 +116,10 @@ export default function PetitionsPanel(props: {
           <div key={pet.id} className="event-card">
             <div className="event-title">{pet.title}</div>
             <p className="listing-desc">{pet.description}</p>
-            <div className="pétition-progress">
-              <div className="pétition-progress-fill" style={{ width: percent + '%' }}></div>
+            <div className="petition-progress">
+              <div className="petition-progress-fill" style={{ width: percent + '%' }}></div>
             </div>
-            <div className="pétition-count">{count} / {pet.goal_signatures} signatures</div>
+            <div className="petition-count">{count} / {pet.goal_signatures} signatures</div>
             <button
               type="button"
               className={alreadySigned ? 'applied' : ''}
@@ -127,7 +127,7 @@ export default function PetitionsPanel(props: {
               onClick={() => handleSign(pet.id)}
               style={{ marginTop: 12 }}
             >
-              {alreadySigned ? 'Déjà signe' : signing === pet.id ? 'Envoi...' : 'Signer'}
+              {alreadySigned ? 'Déjà signé' : signing === pet.id ? 'Envoi...' : 'Signer'}
             </button>
           </div>
         );
