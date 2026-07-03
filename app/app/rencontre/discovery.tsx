@@ -7,6 +7,7 @@ import TabBar from '@/components/tab-bar';
 import GridView from './grid-view';
 import SwipeView from './swipe-view';
 import ProfilForm from './profil-form';
+import MessagesInbox from './messages-inbox';
 
 type Profile = {
   userId: string;
@@ -40,6 +41,7 @@ export default function Discovery(props: Props) {
   const [view, setView] = useState(props.hasDatingProfile ? 'grid' : 'profil');
   const [profiles, setProfiles] = useState(props.initialProfiles);
   const [matchMessage, setMatchMessage] = useState<string | null>(null);
+  const [matchLink, setMatchLink] = useState<string | null>(null);
 
   async function handleSwipe(targetUserId: string, liked: boolean) {
     const supabase = createClient();
@@ -61,7 +63,11 @@ export default function Discovery(props: Props) {
 
       if (match) {
         setMatchMessage('Match ! Vous vous etes plu mutuellement.');
-        setTimeout(() => setMatchMessage(null), 3000);
+        setMatchLink('/app/rencontre/messages/' + match.id);
+        setTimeout(() => {
+          setMatchMessage(null);
+          setMatchLink(null);
+        }, 5000);
       }
     }
 
@@ -98,6 +104,7 @@ export default function Discovery(props: Props) {
         tabs={[
           { key: 'grid', label: 'Grille' },
           { key: 'swipe', label: 'Swipe' },
+          { key: 'messages', label: 'Messages' },
           { key: 'profil', label: 'Mon profil' },
         ]}
       />
@@ -105,14 +112,20 @@ export default function Discovery(props: Props) {
       {matchMessage && (
         <p className="hint" style={{ textAlign: 'center', color: 'var(--rose)', marginBottom: 16 }}>
           {matchMessage}
+          {matchLink && (
+            <>
+              {' '}
+              <a href={matchLink} style={{ color: 'var(--rose)', textDecoration: 'underline' }}>
+                Envoyer un message
+              </a>
+            </>
+          )}
         </p>
       )}
 
-      {view === 'grid' ? (
-        <GridView profiles={profiles} onSwipe={handleSwipe} />
-      ) : (
-        <SwipeView profiles={profiles} onSwipe={handleSwipe} />
-      )}
+      {view === 'grid' && <GridView profiles={profiles} onSwipe={handleSwipe} />}
+      {view === 'swipe' && <SwipeView profiles={profiles} onSwipe={handleSwipe} />}
+      {view === 'messages' && <MessagesInbox currentUserId={props.currentUserId} />}
     </main>
   );
 }
