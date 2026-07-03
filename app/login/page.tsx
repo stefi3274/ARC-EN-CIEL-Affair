@@ -80,6 +80,13 @@ export default function LoginPage() {
               </button>
             </form>
             <p className="hint">Aucune donnée n'est partagée entre les modules de l'app.</p>
+            <p className="hint" style={{ marginTop: 10 }}>
+              <a href="/legal/cgu" style={{ color: 'inherit' }}>CGU</a>
+              {' · '}
+              <a href="/legal/confidentialite" style={{ color: 'inherit' }}>Confidentialite</a>
+              {' · '}
+              <a href="/legal/mentions-legales" style={{ color: 'inherit' }}>Mentions legales</a>
+            </p>
           </>
         )}
       </div>

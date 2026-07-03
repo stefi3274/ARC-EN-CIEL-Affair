@@ -1,31 +1,32 @@
-import { formatDateTime } from '@/lib/format-date';
-import { redirect } from 'next/navigation';
+import { redirect, notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import TopBar from '@/components/top-bar';
-import PostComposer from './post-composer';
-import ReportButton from './report-button';
-import LikeButton from './like-button';
-import CommentsSection from './comments-section';
-import ShareButton from './share-button';
+import { formatDateTime } from '@/lib/format-date';
+import PostComposer from '../../post-composer';
+import LikeButton from '../../like-button';
+import CommentsSection from '../../comments-section';
+import ShareButton from '../../share-button';
+import ReportButton from '../../report-button';
 
-export default async function AppHome() {
+export default async function GroupPage({ params }: { params: { groupId: string } }) {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect('/login');
 
-  const { data: profile } = await supabase
-    .schema('core')
-    .from('profiles')
-    .select('display_name')
-    .eq('id', user.id)
+  const { data: group } = await supabase
+    .schema('social')
+    .from('groups')
+    .select('id, name, city, topic')
+    .eq('id', params.groupId)
     .maybeSingle();
 
-  if (!profile) redirect('/onboarding');
+  if (!group) notFound();
 
   const { data: posts } = await supabase
     .schema('social')
     .from('posts')
     .select('id, author_id, content, media_url, created_at')
+    .eq('group_id', params.groupId)
     .order('created_at', { ascending: false })
     .limit(30);
 
@@ -53,7 +54,6 @@ export default async function AppHome() {
       .from('likes')
       .select('post_id, user_id')
       .in('post_id', postIds);
-
     (likeRows ?? []).forEach((l) => {
       likeCounts[l.post_id] = (likeCounts[l.post_id] ?? 0) + 1;
       if (l.user_id === user.id) likedByMe.add(l.post_id);
@@ -64,7 +64,6 @@ export default async function AppHome() {
       .from('comments')
       .select('post_id')
       .in('post_id', postIds);
-
     (commentRows ?? []).forEach((c) => {
       commentCounts[c.post_id] = (commentCounts[c.post_id] ?? 0) + 1;
     });
@@ -73,19 +72,19 @@ export default async function AppHome() {
   return (
     <div className="feed-shell">
       <TopBar active="fil" />
-
       <main className="feed-main">
-        <div className="groups-link-row">
-          <a href="/app/groupes">Voir les groupes →</a>
+        <div className="group-header">
+          <div>
+            <h1 style={{ marginBottom: 4 }}>{group.name}</h1>
+            <p className="hint">{[group.city, group.topic].filter(Boolean).join(' · ') || 'Groupe general'}</p>
+          </div>
+          <a href="/app/groupes"><button type="button">Tous les groupes</button></a>
         </div>
-        <PostComposer />
+
+        <PostComposer groupId={group.id} />
 
         <div className="post-list">
-          {rows.length === 0 && (
-            <p className="hint" style={{ textAlign: 'center', marginTop: 40 }}>
-              Aucun post pour le moment. Sois le premier a ecrire quelque chose.
-            </p>
-          )}
+          {rows.length === 0 && <p className="empty-state">Aucun post dans ce groupe pour le moment.</p>}
 
           {rows.map((post) => {
             const author = authors[post.author_id];
@@ -113,11 +112,7 @@ export default async function AppHome() {
                 )}
 
                 <div className="post-actions">
-                  <LikeButton
-                    postId={post.id}
-                    initialLiked={likedByMe.has(post.id)}
-                    initialCount={likeCounts[post.id] ?? 0}
-                  />
+                  <LikeButton postId={post.id} initialLiked={likedByMe.has(post.id)} initialCount={likeCounts[post.id] ?? 0} />
                   <CommentsSection postId={post.id} initialCount={commentCounts[post.id] ?? 0} />
                   <ShareButton content={post.content} />
                 </div>

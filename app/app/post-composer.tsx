@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 
-export default function PostComposer() {
+export default function PostComposer(props: { groupId?: string; onPosted?: () => void }) {
   const router = useRouter();
   const [content, setContent] = useState('');
   const [mediaUrl, setMediaUrl] = useState<string | null>(null);
@@ -59,7 +59,7 @@ export default function PostComposer() {
     const result = await supabase
       .schema('social')
       .from('posts')
-      .insert({ author_id: user.id, content: content.trim() || '', media_url: mediaUrl });
+      .insert({ author_id: user.id, content: content.trim() || '', media_url: mediaUrl, group_id: props.groupId ?? null });
 
     setLoading(false);
 
@@ -70,6 +70,7 @@ export default function PostComposer() {
 
     setContent('');
     setMediaUrl(null);
+    if (props.onPosted) props.onPosted();
     router.refresh();
   }
 
