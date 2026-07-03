@@ -11,14 +11,15 @@ export default function MentionsLegalesPage() {
 
       <h2>Editeur du site</h2>
       <p>
-        Nom / raison sociale : a completer<br />
-        Statut (particulier, entreprise individuelle, societe...) : a completer<br />
+        Nom / raison sociale : SteFi Services<br />
+        Statut : a completer (particulier, entreprise individuelle, societe...)<br />
         Adresse : a completer<br />
-        Email de contact : a completer
+        Email de contact : stefi3274@gmail.com<br />
+        WhatsApp : +509 36281876
       </p>
 
       <h2>Directeur de publication</h2>
-      <p>A completer</p>
+      <p>SteFi Services</p>
 
       <h2>Hebergement</h2>
       <p>
@@ -27,7 +28,10 @@ export default function MentionsLegalesPage() {
       </p>
 
       <h2>Contact</h2>
-      <p>Pour toute question : a completer (adresse email de contact).</p>
+      <p>
+        Email : stefi3274@gmail.com<br />
+        WhatsApp : +509 36281876
+      </p>
     </main>
   );
 }

@@ -60,7 +60,9 @@ export default function CGUPage() {
       </p>
 
       <h2>8. Contact</h2>
-      <p>Pour toute question : a completer (adresse email de contact).</p>
+      <p>
+        Pour toute question : stefi3274@gmail.com — WhatsApp +509 36281876
+      </p>
     </main>
   );
 }
