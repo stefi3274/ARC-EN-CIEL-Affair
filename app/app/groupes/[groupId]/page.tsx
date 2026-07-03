@@ -76,7 +76,7 @@ export default async function GroupPage({ params }: { params: { groupId: string 
         <div className="group-header">
           <div>
             <h1 style={{ marginBottom: 4 }}>{group.name}</h1>
-            <p className="hint">{[group.city, group.topic].filter(Boolean).join(' · ') || 'Groupe general'}</p>
+            <p className="hint">{[group.city, group.topic].filter(Boolean).join(' · ') || 'Groupe général'}</p>
           </div>
           <a href="/app/groupes"><button type="button">Tous les groupes</button></a>
         </div>

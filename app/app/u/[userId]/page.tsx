@@ -51,7 +51,7 @@ export default async function PublicProfilePage({ params }: { params: { userId: 
         </div>
 
         <div className="post-list" style={{ marginTop: 24 }}>
-          {(posts ?? []).length === 0 && <p className="empty-state">Aucun post publie.</p>}
+          {(posts ?? []).length === 0 && <p className="empty-state">Aucun post publié.</p>}
 
           {(posts ?? []).map((post) => (
             <article key={post.id} className="post-card">

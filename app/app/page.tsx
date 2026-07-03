@@ -83,7 +83,7 @@ export default async function AppHome() {
         <div className="post-list">
           {rows.length === 0 && (
             <p className="hint" style={{ textAlign: 'center', marginTop: 40 }}>
-              Aucun post pour le moment. Sois le premier a ecrire quelque chose.
+              Aucun post pour le moment. Sois le premier a écrire quelque chose.
             </p>
           )}
 

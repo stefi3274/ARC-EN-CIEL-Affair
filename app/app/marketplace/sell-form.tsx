@@ -120,7 +120,7 @@ export default function SellForm(props: { categories: any[]; onCreated: () => vo
     if (variantRows.length > 0) {
       const variantResult = await supabase.schema('marketplace').from('listing_variants').insert(variantRows);
       if (variantResult.error) {
-        setError("Annonce publiee, mais les variantes n'ont pas pu etre enregistrees : " + variantResult.error.message);
+        setError("Annonce publiée, mais les variantes n'ont pas pu être enregistrees : " + variantResult.error.message);
         setSaving(false);
         return;
       }

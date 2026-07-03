@@ -110,7 +110,7 @@ export default function MessagesInbox(props: { currentUserId: string }) {
   }
 
   if (rows.length === 0) {
-    return <p className="empty-state">Aucun match pour le moment. Continue a decouvrir des profils.</p>;
+    return <p className="empty-state">Aucun match pour le moment. Continue a découvrir des profils.</p>;
   }
 
   return (

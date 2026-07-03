@@ -68,7 +68,7 @@ export default function Discovery(props: Props) {
         .maybeSingle();
 
       if (match) {
-        setMatchMessage('Match ! Vous vous etes plu mutuellement.');
+        setMatchMessage('Match ! Vous vous êtes plu mutuellement.');
         setMatchLink('/app/rencontre/messages/' + match.id);
         setTimeout(() => {
           setMatchMessage(null);

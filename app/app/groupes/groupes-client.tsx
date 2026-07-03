@@ -36,7 +36,7 @@ export default function GroupesClient(props: { groups: any[]; myGroupIds: string
 
     if (result.error) {
       setSaving(false);
-      setError('Creation impossible : ' + result.error.message);
+      setError('Création impossible : ' + result.error.message);
       return;
     }
 
@@ -78,7 +78,7 @@ export default function GroupesClient(props: { groups: any[]; myGroupIds: string
   return (
     <div>
       <button type="button" onClick={() => setShowForm((v) => !v)} style={{ marginBottom: 20 }}>
-        {showForm ? 'Annuler' : '+ Creer un groupe'}
+        {showForm ? 'Annuler' : '+ Créer un groupe'}
       </button>
 
       {showForm && (
@@ -93,7 +93,7 @@ export default function GroupesClient(props: { groups: any[]; myGroupIds: string
           <input id="groupTopic" type="text" value={topic} onChange={(e) => setTopic(e.target.value)} style={{ marginBottom: 16 }} />
 
           <button type="submit" disabled={saving || !name}>
-            {saving ? 'Creation...' : 'Creer le groupe'}
+            {saving ? 'Création...' : 'Créer le groupe'}
           </button>
         </form>
       )}
@@ -108,7 +108,7 @@ export default function GroupesClient(props: { groups: any[]; myGroupIds: string
           <div key={g.id} className="group-card">
             <div className="group-name">{g.name}</div>
             <div className="group-meta">
-              {[g.city, g.topic].filter(Boolean).join(' · ') || 'Groupe general'}
+              {[g.city, g.topic].filter(Boolean).join(' · ') || 'Groupe général'}
             </div>
             {isMember ? (
               <a href={'/app/groupes/' + g.id}>

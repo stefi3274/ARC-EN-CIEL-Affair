@@ -23,7 +23,7 @@ export default function EventsPanel(props: { events: any[]; goingSet: Set<string
     const userResult = await supabase.auth.getUser();
     const user = userResult.data.user;
     if (!user) {
-      setError('Session expiree, reconnecte-toi.');
+      setError('Session expirée, reconnecte-toi.');
       setSaving(false);
       return;
     }
@@ -76,7 +76,7 @@ export default function EventsPanel(props: { events: any[]; goingSet: Set<string
   return (
     <div>
       <button type="button" onClick={() => setShowForm((v) => !v)} style={{ marginBottom: 20 }}>
-        {showForm ? 'Annuler' : '+ Creer un evenement'}
+        {showForm ? 'Annuler' : '+ Créer un événement'}
       </button>
 
       {showForm && (
@@ -95,12 +95,12 @@ export default function EventsPanel(props: { events: any[]; goingSet: Set<string
 
           {error && <p className="error-msg">{error}</p>}
           <button type="submit" disabled={saving || !title || !startsAt}>
-            {saving ? 'Creation...' : "Publier l'evenement"}
+            {saving ? 'Création...' : "Publier l'événement"}
           </button>
         </form>
       )}
 
-      {props.events.length === 0 && <p className="empty-state">Aucun evenement pour le moment.</p>}
+      {props.events.length === 0 && <p className="empty-state">Aucun événement pour le moment.</p>}
 
       {props.events.map((ev) => {
         const isGoing = props.goingSet.has(ev.id);

@@ -30,14 +30,14 @@ export default async function AgendaPage() {
     .select('event_id, status')
     .eq('user_id', user.id);
 
-  const { data: petitions } = await supabase
+  const { data: pétitions } = await supabase
     .schema('events')
-    .from('petitions')
+    .from('pétitions')
     .select('id, creator_id, title, description, goal_signatures, created_at')
     .order('created_at', { ascending: false })
     .limit(30);
 
-  const petitionIds = (petitions ?? []).map((p) => p.id);
+  const petitionIds = (pétitions ?? []).map((p) => p.id);
   let signatureCounts: Record<string, number> = {};
   let mySignatures = new Set<string>();
 
@@ -70,7 +70,7 @@ export default async function AgendaPage() {
         canSignPetitions={!!(coreProfile.identity_verified || coreProfile.email_verified)}
         events={events ?? []}
         myRsvps={myRsvps ?? []}
-        petitions={petitions ?? []}
+        pétitions={pétitions ?? []}
         signatureCounts={signatureCounts}
         mySignedIds={Array.from(mySignatures)}
         classifieds={classifieds ?? []}

@@ -112,7 +112,7 @@ export default function CommentsSection(props: { postId: string; initialCount: n
               type="text"
               value={text}
               onChange={(e) => setText(e.target.value)}
-              placeholder="Ecrire un commentaire..."
+              placeholder="Écrire un commentaire..."
             />
             <button type="submit" disabled={sending || !text.trim()}>
               Envoyer

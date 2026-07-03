@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 
 export default function PetitionsPanel(props: {
-  petitions: any[];
+  pétitions: any[];
   signatureCounts: Record<string, number>;
   mySignedIds: Set<string>;
   canSign: boolean;
@@ -27,14 +27,14 @@ export default function PetitionsPanel(props: {
     const userResult = await supabase.auth.getUser();
     const user = userResult.data.user;
     if (!user) {
-      setError('Session expiree, reconnecte-toi.');
+      setError('Session expirée, reconnecte-toi.');
       setSaving(false);
       return;
     }
 
     const result = await supabase
       .schema('events')
-      .from('petitions')
+      .from('pétitions')
       .insert({
         creator_id: user.id,
         title,
@@ -78,12 +78,12 @@ export default function PetitionsPanel(props: {
   return (
     <div>
       <button type="button" onClick={() => setShowForm((v) => !v)} style={{ marginBottom: 20 }}>
-        {showForm ? 'Annuler' : '+ Lancer une petition'}
+        {showForm ? 'Annuler' : '+ Lancer une pétition'}
       </button>
 
       {!props.canSign && (
         <p className="hint" style={{ marginBottom: 20 }}>
-          Confirme ton email pour pouvoir signer des petitions.
+          Confirme ton email pour pouvoir signer des pétitions.
         </p>
       )}
 
@@ -100,14 +100,14 @@ export default function PetitionsPanel(props: {
 
           {error && <p className="error-msg">{error}</p>}
           <button type="submit" disabled={saving || !title}>
-            {saving ? 'Creation...' : 'Publier la petition'}
+            {saving ? 'Création...' : 'Publier la pétition'}
           </button>
         </form>
       )}
 
-      {props.petitions.length === 0 && <p className="empty-state">Aucune petition pour le moment.</p>}
+      {props.pétitions.length === 0 && <p className="empty-state">Aucune pétition pour le moment.</p>}
 
-      {props.petitions.map((pet) => {
+      {props.pétitions.map((pet) => {
         const count = props.signatureCounts[pet.id] ?? 0;
         const percent = Math.min(100, Math.round((count / (pet.goal_signatures || 1)) * 100));
         const alreadySigned = props.mySignedIds.has(pet.id);
@@ -116,10 +116,10 @@ export default function PetitionsPanel(props: {
           <div key={pet.id} className="event-card">
             <div className="event-title">{pet.title}</div>
             <p className="listing-desc">{pet.description}</p>
-            <div className="petition-progress">
-              <div className="petition-progress-fill" style={{ width: percent + '%' }}></div>
+            <div className="pétition-progress">
+              <div className="pétition-progress-fill" style={{ width: percent + '%' }}></div>
             </div>
-            <div className="petition-count">{count} / {pet.goal_signatures} signatures</div>
+            <div className="pétition-count">{count} / {pet.goal_signatures} signatures</div>
             <button
               type="button"
               className={alreadySigned ? 'applied' : ''}
@@ -127,7 +127,7 @@ export default function PetitionsPanel(props: {
               onClick={() => handleSign(pet.id)}
               style={{ marginTop: 12 }}
             >
-              {alreadySigned ? 'Deja signe' : signing === pet.id ? 'Envoi...' : 'Signer'}
+              {alreadySigned ? 'Déjà signe' : signing === pet.id ? 'Envoi...' : 'Signer'}
             </button>
           </div>
         );

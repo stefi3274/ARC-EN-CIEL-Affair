@@ -56,7 +56,7 @@ export default function ReportButton(props: { targetType: string; targetId: stri
   }
 
   if (sent) {
-    return <p className="hint" style={{ marginTop: 10 }}>Signalement envoye.</p>;
+    return <p className="hint" style={{ marginTop: 10 }}>Signalement envoyé.</p>;
   }
 
   if (!open) {

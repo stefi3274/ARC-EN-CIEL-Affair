@@ -123,7 +123,7 @@ export default function ProfilClient(props: {
 
     if (result.error) {
       setDeleting(false);
-      setDeleteError('Suppression impossible. Reessaie ou contacte le support.');
+      setDeleteError('Suppression impossible. Réessaie ou contacte le support.');
       return;
     }
 
@@ -230,8 +230,15 @@ export default function ProfilClient(props: {
 
       <div className="signout-row">
         <button type="button" onClick={handleSignOut} disabled={signingOut}>
-          {signingOut ? 'Deconnexion...' : 'Se deconnecter'}
+          {signingOut ? 'Déconnexion...' : 'Se déconnecter'}
         </button>
+        <p className="hint" style={{ marginTop: 14 }}>
+          <a href="/legal/cgu" style={{ color: 'inherit' }}>CGU</a>
+          {' · '}
+          <a href="/legal/confidentialite" style={{ color: 'inherit' }}>Confidentialité</a>
+          {' · '}
+          <a href="/legal/mentions-legales" style={{ color: 'inherit' }}>Mentions légales</a>
+        </p>
       </div>
 
       <div className="danger-zone">
@@ -248,7 +255,7 @@ export default function ProfilClient(props: {
         ) : (
           <div>
             <p style={{ color: 'var(--error)', fontWeight: 500 }}>
-              Es-tu sur ? Cette action ne peut pas etre annulee.
+              Es-tu sur ? Cette action ne peut pas être annulee.
             </p>
             {deleteError && <p className="error-msg">{deleteError}</p>}
             <div style={{ display: 'flex', gap: 10 }}>

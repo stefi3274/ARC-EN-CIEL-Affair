@@ -43,7 +43,7 @@ export default function RecruteurPanel(props: {
     setCreatingCompany(false);
 
     if (result.error) {
-      setCompanyError('Creation impossible : ' + result.error.message);
+      setCompanyError('Création impossible : ' + result.error.message);
       return;
     }
 
@@ -120,7 +120,7 @@ export default function RecruteurPanel(props: {
           />
           {companyError && <p className="error-msg">{companyError}</p>}
           <button type="submit" disabled={creatingCompany || !companyName}>
-            {creatingCompany ? 'Creation...' : "Creer l'entreprise"}
+            {creatingCompany ? 'Création...' : "Créer l'entreprise"}
           </button>
         </form>
       </div>

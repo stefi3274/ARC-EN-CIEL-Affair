@@ -51,7 +51,7 @@ export default function PostComposer(props: { groupId?: string; onPosted?: () =>
     const user = userResult.data.user;
 
     if (!user) {
-      setError('Session expiree, reconnecte-toi.');
+      setError('Session expirée, reconnecte-toi.');
       setLoading(false);
       return;
     }
@@ -64,7 +64,7 @@ export default function PostComposer(props: { groupId?: string; onPosted?: () =>
     setLoading(false);
 
     if (result.error) {
-      setError('Publication impossible. Reessaie.');
+      setError('Publication impossible. Réessaie.');
       return;
     }
 

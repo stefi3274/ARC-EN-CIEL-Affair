@@ -35,7 +35,7 @@ export default function MyListings(props: { myListings: any[]; onChanged: () => 
   }
 
   if (props.myListings.length === 0) {
-    return <p className="empty-state">Tu n'as pas encore publie d'annonce.</p>;
+    return <p className="empty-state">Tu n'as pas encore publié d'annonce.</p>;
   }
 
   return (
@@ -46,12 +46,12 @@ export default function MyListings(props: { myListings: any[]; onChanged: () => 
           <div className="listing-title">{l.title}</div>
           <div className="listing-company">{l.price ? l.price + ' $' : 'Prix a discuter'}</div>
           {l.variants.length > 0 && (
-            <p className="listing-desc">{l.variants.length} variante(s) configuree(s)</p>
+            <p className="listing-desc">{l.variants.length} variante(s) configurée(s)</p>
           )}
           {l.boosted ? (
-            <span className="listing-tag" style={{ borderColor: 'var(--orange)', color: 'var(--orange)' }}>Deja en avant</span>
+            <span className="listing-tag" style={{ borderColor: 'var(--orange)', color: 'var(--orange)' }}>Déjà en avant</span>
           ) : requested.has(l.id) ? (
-            <button className="boost-btn" disabled>Demande envoyee</button>
+            <button className="boost-btn" disabled>Demande envoyée</button>
           ) : (
             <button className="boost-btn" onClick={() => requestBoost(l.id)} disabled={requesting === l.id}>
               {requesting === l.id ? 'Envoi...' : 'Contacter - Mettre en avant'}

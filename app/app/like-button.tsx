@@ -30,7 +30,7 @@ export default function LikeButton(props: { postId: string; initialLiked: boolea
         .eq('user_id', user.id);
 
       if (result.error) {
-        // echec silencieux impossible : on annule le changement visuel
+        // échec silencieux impossible : on annule le changement visuel
         setLiked(true);
         setCount((c) => c + 1);
       }

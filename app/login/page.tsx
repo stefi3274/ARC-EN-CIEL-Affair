@@ -83,9 +83,9 @@ export default function LoginPage() {
             <p className="hint" style={{ marginTop: 10 }}>
               <a href="/legal/cgu" style={{ color: 'inherit' }}>CGU</a>
               {' · '}
-              <a href="/legal/confidentialite" style={{ color: 'inherit' }}>Confidentialite</a>
+              <a href="/legal/confidentialite" style={{ color: 'inherit' }}>Confidentialité</a>
               {' · '}
-              <a href="/legal/mentions-legales" style={{ color: 'inherit' }}>Mentions legales</a>
+              <a href="/legal/mentions-legales" style={{ color: 'inherit' }}>Mentions légales</a>
             </p>
           </>
         )}

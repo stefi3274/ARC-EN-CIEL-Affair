@@ -53,7 +53,7 @@ export default function ProfilForm(props: Props) {
     setUploading(false);
 
     if (uploadResult.error) {
-      setError('Envoi de la photo impossible. Reessaie.');
+      setError('Envoi de la photo impossible. Réessaie.');
       return;
     }
 
@@ -93,7 +93,7 @@ export default function ProfilForm(props: Props) {
     const user = userResult.data.user;
 
     if (!user) {
-      setError('Session expiree, reconnecte-toi.');
+      setError('Session expirée, reconnecte-toi.');
       setSaving(false);
       return;
     }
@@ -125,7 +125,7 @@ export default function ProfilForm(props: Props) {
     setSaving(false);
 
     if (result.error) {
-      setError('Enregistrement impossible. Reessaie.');
+      setError('Enregistrement impossible. Réessaie.');
       return;
     }
 
@@ -164,7 +164,7 @@ export default function ProfilForm(props: Props) {
       <h1>Ton profil Rencontre</h1>
       <p className="sub">
         Tout est optionnel. Rien ici n'est visible dans les autres modules de l'app. Ces
-        informations aident les autres a mieux te connaitre avant de matcher.
+        informations aident les autres à mieux te connaître avant de matcher.
       </p>
 
       <form onSubmit={handleSave}>
@@ -186,13 +186,13 @@ export default function ProfilForm(props: Props) {
           placeholder="Ce que tu sais bien faire (optionnel)"
         />
 
-        <label htmlFor="dreams">Reves</label>
+        <label htmlFor="dreams">Rêves</label>
         <textarea
           id="dreams"
           rows={2}
           value={dreams}
           onChange={(e) => setDreams(e.target.value)}
-          placeholder="Ce dont tu reves (optionnel)"
+          placeholder="Ce dont tu rêves (optionnel)"
         />
 
         <label htmlFor="goals">Buts</label>
@@ -227,7 +227,7 @@ export default function ProfilForm(props: Props) {
         </div>
 
         <div className="toggle-row">
-          <span>Visible dans la decouverte</span>
+          <span>Visible dans la découverte</span>
           <input type="checkbox" checked={visible} onChange={(e) => setVisible(e.target.checked)} />
         </div>
 
@@ -244,7 +244,7 @@ export default function ProfilForm(props: Props) {
           type="text"
           value={statusText}
           onChange={(e) => setStatusText(e.target.value)}
-          placeholder="Ex: dispo ce soir pour un cafe"
+          placeholder="Ex: dispo ce soir pour un café"
           style={{ marginBottom: 12 }}
         />
 
@@ -257,7 +257,7 @@ export default function ProfilForm(props: Props) {
         </div>
 
         <button type="button" onClick={handlePostStatus} disabled={!statusText.trim() && !statusPhoto}>
-          {statusSent ? 'Publie' : 'Publier le statut'}
+          {statusSent ? 'Publié' : 'Publier le statut'}
         </button>
         {error && <p className="error-msg">{error}</p>}
       </div>

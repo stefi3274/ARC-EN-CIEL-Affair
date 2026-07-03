@@ -36,7 +36,7 @@ export default async function GroupesPage() {
       <TopBar active="fil" />
       <main className="groups-main">
         <h1>Groupes</h1>
-        <p className="sub">Retrouve les gens par ville ou par interet.</p>
+        <p className="sub">Retrouve les gens par ville ou par intérêt.</p>
         <GroupesClient groups={groups ?? []} myGroupIds={myGroupIds} />
       </main>
     </div>

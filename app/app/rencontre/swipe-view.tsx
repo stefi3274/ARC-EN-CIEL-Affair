@@ -30,7 +30,7 @@ export default function SwipeView(props: { profiles: Profile[]; onSwipe: (userId
               <div className="swipe-name">{current.age ? current.age + ' ans' : 'Profil'}</div>
               <p className="swipe-bio">{current.bio || 'Pas de bio'}</p>
               {current.talents && <p className="swipe-bio">Talent : {current.talents}</p>}
-              {current.dreams && <p className="swipe-bio">Reve : {current.dreams}</p>}
+              {current.dreams && <p className="swipe-bio">Rêve : {current.dreams}</p>}
               {current.goals && <p className="swipe-bio">Cherche : {current.goals}</p>}
             </div>
           </div>

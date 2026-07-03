@@ -122,7 +122,7 @@ export default function ConversationClient(props: {
     setSending(false);
 
     if (result.error) {
-      setSendError("Message non envoye : " + result.error.message);
+      setSendError("Message non envoyé : " + result.error.message);
       return;
     }
 
@@ -143,8 +143,8 @@ export default function ConversationClient(props: {
       <div className="conversation-messages">
         {keyError && (
           <p className="hint" style={{ textAlign: 'center' }}>
-            Impossible de dechiffrer cette conversation sur cet appareil. Reconnecte-toi depuis
-            l'appareil ou tu as cree ton profil Rencontre.
+            Impossible de déchiffrer cette conversation sur cet appareil. Reconnecte-toi depuis
+            l'appareil ou tu as créé ton profil Rencontre.
           </p>
         )}
 

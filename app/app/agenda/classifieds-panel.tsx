@@ -22,7 +22,7 @@ export default function ClassifiedsPanel(props: { classifieds: any[]; onChanged:
     const userResult = await supabase.auth.getUser();
     const user = userResult.data.user;
     if (!user) {
-      setError('Session expiree, reconnecte-toi.');
+      setError('Session expirée, reconnecte-toi.');
       setSaving(false);
       return;
     }
@@ -63,7 +63,7 @@ export default function ClassifiedsPanel(props: { classifieds: any[]; onChanged:
 
       {showForm && (
         <form onSubmit={handleCreate} className="cv-box">
-          <label htmlFor="clCategory">Categorie</label>
+          <label htmlFor="clCategory">Catégorie</label>
           <input id="clCategory" type="text" placeholder="Logement, covoiturage..." value={category} onChange={(e) => setCategory(e.target.value)} style={{ marginBottom: 16 }} />
 
           <label htmlFor="clTitle">Titre</label>

@@ -22,7 +22,7 @@ export default async function ModerationPage() {
       <div className="feed-shell">
         <TopBar active="moderation" />
         <main className="moderation-main">
-          <p className="empty-state">Cette page est reservee aux moderateurs.</p>
+          <p className="empty-state">Cette page est réservée aux moderateurs.</p>
         </main>
       </div>
     );
