@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import CommentMenu from './comment-menu';
 
 type Comment = {
   id: string;
@@ -17,10 +18,14 @@ export default function CommentsSection(props: { postId: string; initialCount: n
   const [text, setText] = useState('');
   const [count, setCount] = useState(props.initialCount);
   const [sending, setSending] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
   async function loadComments() {
     setLoading(true);
     const supabase = createClient();
+
+    const userResult = await supabase.auth.getUser();
+    setCurrentUserId(userResult.data.user?.id ?? null);
 
     const { data: rows } = await supabase
       .schema('social')
@@ -90,6 +95,15 @@ export default function CommentsSection(props: { postId: string; initialCount: n
     }
   }
 
+  function handleCommentUpdated(commentId: string, newContent: string) {
+    setComments((prev) => (prev ?? []).map((c) => (c.id === commentId ? { ...c, content: newContent } : c)));
+  }
+
+  function handleCommentDeleted(commentId: string) {
+    setComments((prev) => (prev ?? []).filter((c) => c.id !== commentId));
+    setCount((c) => Math.max(0, c - 1));
+  }
+
   return (
     <div>
       <button type="button" className="post-action-btn" onClick={handleToggle}>
@@ -104,6 +118,13 @@ export default function CommentsSection(props: { postId: string; initialCount: n
             <div key={c.id} className="comment-item">
               <a href={'/app/u/' + c.authorId} className="comment-author">{c.authorName}</a>
               <span className="comment-text">{c.content}</span>
+              <CommentMenu
+                commentId={c.id}
+                content={c.content}
+                isOwner={c.authorId === currentUserId}
+                onUpdated={(newContent) => handleCommentUpdated(c.id, newContent)}
+                onDeleted={() => handleCommentDeleted(c.id)}
+              />
             </div>
           ))}
 

@@ -21,6 +21,8 @@
   --blue:#6C93B8;
   --blue-soft:#1f2833;
   --blue-deep:#4a6a8a;
+  --btn-bg:#F4EFE4;
+  --btn-text:#151310;
 }
 html{ font-size:17.5px; }
 *{box-sizing:border-box;}
@@ -81,7 +83,7 @@ input:focus-visible{outline:2px solid var(--gold); outline-offset:1px;}
 }
 button{
   width:100%;
-  background:var(--ivory); color:var(--ink);
+  background:var(--btn-bg); color:var(--btn-text);
   border:none; padding:15px; border-radius:100px;
   font-size:0.92rem; font-weight:500; cursor:pointer;
   transition:background .2s ease;
@@ -173,11 +175,11 @@ button:disabled{opacity:0.5; cursor:default;}
   transition:transform .15s ease, border-color .2s ease, background .2s ease;
 }
 .module-nav a:active{ transform:scale(0.96); }
-.module-nav a.fil{ color:var(--blue); border-color:rgba(108,147,184,0.35); }
-.module-nav a.rencontre{ color:var(--rose); border-color:rgba(193,123,141,0.35); }
-.module-nav a.emploi{ color:var(--green); border-color:rgba(95,167,121,0.35); }
-.module-nav a.marketplace{ color:var(--orange); border-color:rgba(217,154,91,0.35); }
-.module-nav a.agenda{ color:var(--violet); border-color:rgba(154,123,193,0.35); }
+.module-nav a.fil{ color:var(--blue-deep); border-color:rgba(74,106,138,0.5); }
+.module-nav a.rencontre{ color:var(--rose-deep); border-color:rgba(138,74,88,0.5); }
+.module-nav a.emploi{ color:var(--green-deep); border-color:rgba(61,122,86,0.5); }
+.module-nav a.marketplace{ color:var(--orange-deep); border-color:rgba(163,112,47,0.5); }
+.module-nav a.agenda{ color:var(--violet-deep); border-color:rgba(107,74,149,0.5); }
 .module-nav a.fil.active{ background:var(--blue); color:#0e1a24; border-color:var(--blue); }
 .module-nav a.rencontre.active{ background:var(--rose); color:#241318; border-color:var(--rose); }
 .module-nav a.emploi.active{ background:var(--green); color:#0f1a14; border-color:var(--green); }
@@ -655,7 +657,13 @@ body.theme-light textarea, body.theme-light select{
 }
 .post-action-btn.liked{ color:var(--rose); }
 .comments-box{ margin-top:12px; padding-top:12px; border-top:1px solid var(--line); }
-.comment-item{ font-size:0.85rem; margin-bottom:8px; }
+.comment-item{ font-size:0.85rem; margin-bottom:8px; display:flex; align-items:flex-start; gap:4px; }
+.comment-menu-wrap{ position:relative; margin-left:auto; flex-shrink:0; }
+.comment-menu-btn{
+  width:22px; height:22px; padding:0; border-radius:50%;
+  background:none; border:none; color:var(--ivory-dim); font-size:0.9rem;
+}
+.comment-menu-btn:hover{ background:var(--ink-soft); }
 .comment-author{
   color:var(--gold); text-decoration:none; font-weight:500; margin-right:6px;
 }
@@ -739,3 +747,39 @@ body.theme-light textarea, body.theme-light select{
   color:var(--ivory-dim); font-size:0.92rem; line-height:1.7; margin-bottom:14px;
 }
 .legal-main ul{ padding-left:20px; }
+
+/* ---------- Menu contextuel de post ---------- */
+.post-menu-wrap{ position:relative; display:inline-block; margin-left:auto; }
+.post-menu-btn{
+  width:28px; height:28px; padding:0; border-radius:50%;
+  background:none; border:none; color:var(--ivory-dim); font-size:1.1rem;
+}
+.post-menu-btn:hover{ background:var(--ink-soft); }
+.post-menu-dropdown{
+  position:absolute; top:32px; right:0; width:220px; z-index:40;
+  background:var(--ink); border:1px solid var(--line); border-radius:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.4); overflow:hidden; padding:6px;
+}
+.post-menu-dropdown button{
+  width:100%; text-align:left; background:none; border:none;
+  color:var(--ivory); font-size:0.85rem; padding:10px 12px; border-radius:8px;
+}
+.post-menu-dropdown button:hover{ background:var(--ink-soft); }
+.post-menu-panel{ padding:12px; }
+.post-menu-panel textarea, .post-menu-panel select{
+  width:100%; background:var(--ink-soft); border:1px solid var(--line);
+  color:var(--ivory); padding:10px 12px; border-radius:8px;
+  font-size:0.85rem; font-family:inherit; margin-bottom:10px;
+}
+.post-menu-panel .report-form-actions{ display:flex; gap:8px; }
+.post-menu-panel .report-form-actions button{
+  width:auto; padding:8px 14px; font-size:0.78rem; background:var(--ink-soft); border:1px solid var(--line);
+}
+.post-menu-photo-row{
+  display:flex; align-items:center; gap:10px; margin-bottom:10px;
+}
+.post-menu-photo-row .photo-thumb{ width:44px; height:44px; flex-shrink:0; }
+.post-menu-photo-row button{
+  width:auto; padding:8px 12px; font-size:0.76rem;
+  background:transparent; border:1px solid var(--error); color:var(--error);
+}

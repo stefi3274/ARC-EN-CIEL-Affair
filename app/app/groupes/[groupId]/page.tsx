@@ -6,7 +6,7 @@ import PostComposer from '../../post-composer';
 import LikeButton from '../../like-button';
 import CommentsSection from '../../comments-section';
 import ShareButton from '../../share-button';
-import ReportButton from '../../report-button';
+import PostMenu from '../../post-menu';
 
 export default async function GroupPage({ params }: { params: { groupId: string } }) {
   const supabase = createClient();
@@ -103,6 +103,7 @@ export default async function GroupPage({ params }: { params: { groupId: string 
                     </a>
                     <div className="post-date">{formatDateTime(post.created_at)}</div>
                   </div>
+                  <PostMenu postId={post.id} content={post.content} mediaUrl={post.media_url} isOwner={post.author_id === user.id} />
                 </div>
 
                 {post.content && <p className="post-content">{post.content}</p>}
@@ -116,8 +117,6 @@ export default async function GroupPage({ params }: { params: { groupId: string 
                   <CommentsSection postId={post.id} initialCount={commentCounts[post.id] ?? 0} />
                   <ShareButton content={post.content} />
                 </div>
-
-                <ReportButton targetType="post" targetId={post.id} />
               </article>
             );
           })}
