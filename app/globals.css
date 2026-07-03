@@ -646,3 +646,32 @@ body.theme-light textarea, body.theme-light select{
 .status-reviewing{ color:var(--blue); border-color:var(--blue); }
 .status-actioned{ color:var(--green); border-color:var(--green); }
 .status-dismissed{ color:var(--ivory-dim); border-color:var(--line); }
+
+/* ---------- Actions sur un post (like / commentaires / partager) ---------- */
+.post-actions{ display:flex; gap:16px; margin-top:12px; align-items:center; }
+.post-action-btn{
+  width:auto; padding:0; background:none; border:none;
+  color:var(--ivory-dim); font-size:0.85rem; display:flex; align-items:center; gap:4px;
+}
+.post-action-btn.liked{ color:var(--rose); }
+.comments-box{ margin-top:12px; padding-top:12px; border-top:1px solid var(--line); }
+.comment-item{ font-size:0.85rem; margin-bottom:8px; }
+.comment-author{
+  color:var(--gold); text-decoration:none; font-weight:500; margin-right:6px;
+}
+.comment-author:hover{ text-decoration:underline; }
+.comment-text{ color:var(--ivory-dim); }
+.comment-form{ display:flex; gap:8px; margin-top:10px; }
+.comment-form input{
+  flex:1; margin-bottom:0; background:var(--ink-soft); border:1px solid var(--line);
+  color:var(--ivory); padding:9px 12px; border-radius:100px; font-size:0.85rem;
+}
+.comment-form button{ width:auto; padding:0 16px; border-radius:100px; font-size:0.8rem; }
+
+/* ---------- Nom d'auteur cliquable ---------- */
+.post-author-link{ color:var(--ivory); text-decoration:none; font-weight:500; font-size:0.92rem; }
+.post-author-link:hover{ text-decoration:underline; }
+
+/* ---------- Profil public ---------- */
+.public-profile-header{ display:flex; align-items:center; gap:16px; }
+.verified-badge{ color:var(--blue); font-size:0.9rem; }

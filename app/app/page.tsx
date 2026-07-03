@@ -4,6 +4,9 @@ import { createClient } from '@/lib/supabase/server';
 import TopBar from '@/components/top-bar';
 import PostComposer from './post-composer';
 import ReportButton from './report-button';
+import LikeButton from './like-button';
+import CommentsSection from './comments-section';
+import ShareButton from './share-button';
 
 export default async function AppHome() {
   const supabase = createClient();
@@ -26,17 +29,45 @@ export default async function AppHome() {
     .order('created_at', { ascending: false })
     .limit(30);
 
-  const authorIds = Array.from(new Set((posts ?? []).map((p) => p.author_id)));
-  let authors: Record<string, { display_name: string; avatar_url: string | null }> = {};
+  const rows = posts ?? [];
+  const postIds = rows.map((p) => p.id);
+  const authorIds = Array.from(new Set(rows.map((p) => p.author_id)));
 
+  let authors: Record<string, { display_name: string; avatar_url: string | null }> = {};
   if (authorIds.length > 0) {
     const { data: authorRows } = await supabase
       .schema('core')
       .from('profiles_public')
       .select('id, display_name, avatar_url')
       .in('id', authorIds);
-
     authors = Object.fromEntries((authorRows ?? []).map((a) => [a.id, a]));
+  }
+
+  let likeCounts: Record<string, number> = {};
+  let likedByMe = new Set<string>();
+  let commentCounts: Record<string, number> = {};
+
+  if (postIds.length > 0) {
+    const { data: likeRows } = await supabase
+      .schema('social')
+      .from('likes')
+      .select('post_id, user_id')
+      .in('post_id', postIds);
+
+    (likeRows ?? []).forEach((l) => {
+      likeCounts[l.post_id] = (likeCounts[l.post_id] ?? 0) + 1;
+      if (l.user_id === user.id) likedByMe.add(l.post_id);
+    });
+
+    const { data: commentRows } = await supabase
+      .schema('social')
+      .from('comments')
+      .select('post_id')
+      .in('post_id', postIds);
+
+    (commentRows ?? []).forEach((c) => {
+      commentCounts[c.post_id] = (commentCounts[c.post_id] ?? 0) + 1;
+    });
   }
 
   return (
@@ -47,31 +78,47 @@ export default async function AppHome() {
         <PostComposer />
 
         <div className="post-list">
-          {(posts ?? []).length === 0 && (
+          {rows.length === 0 && (
             <p className="hint" style={{ textAlign: 'center', marginTop: 40 }}>
               Aucun post pour le moment. Sois le premier a ecrire quelque chose.
             </p>
           )}
 
-          {(posts ?? []).map((post) => {
+          {rows.map((post) => {
             const author = authors[post.author_id];
             return (
               <article key={post.id} className="post-card">
                 <div className="post-header">
-                  <div
-                    className="post-avatar"
-                    style={author?.avatar_url ? { backgroundImage: 'url(' + author.avatar_url + ')', backgroundSize: 'cover', backgroundPosition: 'center' } : undefined}
-                  ></div>
+                  <a href={'/app/u/' + post.author_id}>
+                    <div
+                      className="post-avatar"
+                      style={author?.avatar_url ? { backgroundImage: 'url(' + author.avatar_url + ')', backgroundSize: 'cover', backgroundPosition: 'center' } : undefined}
+                    ></div>
+                  </a>
                   <div>
-                    <div className="post-author">{author ? author.display_name : 'Un membre'}</div>
+                    <a href={'/app/u/' + post.author_id} className="post-author-link">
+                      {author ? author.display_name : 'Un membre'}
+                    </a>
                     <div className="post-date">{formatDateTime(post.created_at)}</div>
                   </div>
                 </div>
+
                 {post.content && <p className="post-content">{post.content}</p>}
                 {post.media_url && (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={post.media_url} alt="" className="post-image" />
                 )}
+
+                <div className="post-actions">
+                  <LikeButton
+                    postId={post.id}
+                    initialLiked={likedByMe.has(post.id)}
+                    initialCount={likeCounts[post.id] ?? 0}
+                  />
+                  <CommentsSection postId={post.id} initialCount={commentCounts[post.id] ?? 0} />
+                  <ShareButton content={post.content} />
+                </div>
+
                 <ReportButton targetType="post" targetId={post.id} />
               </article>
             );
