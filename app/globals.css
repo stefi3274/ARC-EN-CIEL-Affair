@@ -606,3 +606,43 @@ body.theme-light textarea, body.theme-light select{
 .conversation-composer button{
   width:auto; padding:0 20px; border-radius:100px; background:var(--rose); color:#fff;
 }
+
+/* ---------- Photo sur un post ---------- */
+.post-image{
+  width:100%; border-radius:12px; margin-top:10px; display:block;
+  max-height:420px; object-fit:cover;
+}
+
+/* ---------- Signalement ---------- */
+.report-link{
+  background:none; border:none; color:var(--ivory-dim); font-size:0.76rem;
+  padding:0; width:auto; margin-top:10px; text-decoration:underline;
+}
+.report-form{
+  margin-top:10px; padding:12px; border:1px solid var(--line); border-radius:10px;
+}
+.report-form select{ margin-bottom:10px; }
+.report-form textarea{
+  width:100%; background:var(--ink-soft); border:1px solid var(--line);
+  color:var(--ivory); padding:10px 12px; border-radius:8px;
+  font-size:0.85rem; font-family:inherit; margin-bottom:10px;
+}
+.report-form-actions{ display:flex; gap:8px; }
+.report-form-actions button{ width:auto; padding:8px 16px; font-size:0.8rem; }
+
+/* ---------- Moderation ---------- */
+.moderation-main{ max-width:680px; margin:0 auto; padding:32px 20px 80px; }
+.moderation-card{
+  border:1px solid var(--line); border-radius:14px; padding:18px; margin-bottom:14px;
+}
+.moderation-meta{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
+.moderation-content{
+  background:var(--ink-soft); border-radius:10px; padding:12px; margin:10px 0;
+  font-size:0.88rem; color:var(--ivory-dim);
+}
+.moderation-actions{ display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+.moderation-actions button{ width:auto; padding:8px 16px; font-size:0.8rem; }
+.status-pending{ color:var(--orange); border-color:var(--orange); }
+.status-reviewing{ color:var(--blue); border-color:var(--blue); }
+.status-actioned{ color:var(--green); border-color:var(--green); }
+.status-dismissed{ color:var(--ivory-dim); border-color:var(--line); }

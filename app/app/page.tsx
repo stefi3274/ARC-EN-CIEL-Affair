@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import TopBar from '@/components/top-bar';
 import PostComposer from './post-composer';
+import ReportButton from './report-button';
 
 export default async function AppHome() {
   const supabase = createClient();
@@ -48,7 +49,7 @@ export default async function AppHome() {
         <div className="post-list">
           {(posts ?? []).length === 0 && (
             <p className="hint" style={{ textAlign: 'center', marginTop: 40 }}>
-              Aucun post pour le moment. Sois le premier à écrire quelque chose.
+              Aucun post pour le moment. Sois le premier a ecrire quelque chose.
             </p>
           )}
 
@@ -57,13 +58,21 @@ export default async function AppHome() {
             return (
               <article key={post.id} className="post-card">
                 <div className="post-header">
-                  <div className="post-avatar"></div>
+                  <div
+                    className="post-avatar"
+                    style={author?.avatar_url ? { backgroundImage: 'url(' + author.avatar_url + ')', backgroundSize: 'cover', backgroundPosition: 'center' } : undefined}
+                  ></div>
                   <div>
                     <div className="post-author">{author ? author.display_name : 'Un membre'}</div>
                     <div className="post-date">{formatDateTime(post.created_at)}</div>
                   </div>
                 </div>
-                <p className="post-content">{post.content}</p>
+                {post.content && <p className="post-content">{post.content}</p>}
+                {post.media_url && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={post.media_url} alt="" className="post-image" />
+                )}
+                <ReportButton targetType="post" targetId={post.id} />
               </article>
             );
           })}

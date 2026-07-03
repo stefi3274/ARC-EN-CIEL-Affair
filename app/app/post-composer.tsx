@@ -7,12 +7,42 @@ import { createClient } from '@/lib/supabase/client';
 export default function PostComposer() {
   const router = useRouter();
   const [content, setContent] = useState('');
+  const [mediaUrl, setMediaUrl] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setError(null);
+
+    const supabase = createClient();
+    const userResult = await supabase.auth.getUser();
+    const user = userResult.data.user;
+    if (!user) {
+      setUploading(false);
+      return;
+    }
+
+    const path = user.id + '/' + Date.now() + '-' + file.name;
+    const uploadResult = await supabase.storage.from('posts').upload(path, file);
+
+    setUploading(false);
+
+    if (uploadResult.error) {
+      setError("Envoi de l'image impossible.");
+      return;
+    }
+
+    const publicUrl = supabase.storage.from('posts').getPublicUrl(path).data.publicUrl;
+    setMediaUrl(publicUrl);
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!content.trim()) return;
+    if (!content.trim() && !mediaUrl) return;
     setLoading(true);
     setError(null);
 
@@ -21,7 +51,7 @@ export default function PostComposer() {
     const user = userResult.data.user;
 
     if (!user) {
-      setError("Session expirée, reconnecte-toi.");
+      setError('Session expiree, reconnecte-toi.');
       setLoading(false);
       return;
     }
@@ -29,16 +59,17 @@ export default function PostComposer() {
     const result = await supabase
       .schema('social')
       .from('posts')
-      .insert({ author_id: user.id, content: content.trim() });
+      .insert({ author_id: user.id, content: content.trim() || '', media_url: mediaUrl });
 
     setLoading(false);
 
     if (result.error) {
-      setError("Publication impossible. Réessaie.");
+      setError('Publication impossible. Reessaie.');
       return;
     }
 
     setContent('');
+    setMediaUrl(null);
     router.refresh();
   }
 
@@ -50,9 +81,22 @@ export default function PostComposer() {
         placeholder="Quoi de neuf ?"
         rows={3}
       />
+
+      {mediaUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={mediaUrl} alt="" className="post-image" style={{ marginBottom: 14 }} />
+      )}
+
+      <div className="photo-row" style={{ marginBottom: 14 }}>
+        <label className="photo-upload-btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+          {uploading ? '...' : mediaUrl ? 'Changer' : '+ Photo'}
+          <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: 'none' }} />
+        </label>
+      </div>
+
       {error && <p className="error-msg">{error}</p>}
-      <button type="submit" disabled={loading || !content.trim()}>
-        {loading ? 'Publication...' : 'Publiér'}
+      <button type="submit" disabled={loading || (!content.trim() && !mediaUrl)}>
+        {loading ? 'Publication...' : 'Publier'}
       </button>
     </form>
   );
