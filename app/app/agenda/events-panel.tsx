@@ -12,19 +12,23 @@ export default function EventsPanel(props: { events: any[]; goingSet: Set<string
   const [startsAt, setStartsAt] = useState('');
   const [saving, setSaving] = useState(false);
   const [joining, setJoining] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
+    setError(null);
+
     const supabase = createClient();
     const userResult = await supabase.auth.getUser();
     const user = userResult.data.user;
     if (!user) {
+      setError('Session expiree, reconnecte-toi.');
       setSaving(false);
       return;
     }
 
-    await supabase
+    const result = await supabase
       .schema('events')
       .from('events')
       .insert({
@@ -36,6 +40,12 @@ export default function EventsPanel(props: { events: any[]; goingSet: Set<string
       });
 
     setSaving(false);
+
+    if (result.error) {
+      setError('Publication impossible : ' + result.error.message);
+      return;
+    }
+
     setShowForm(false);
     setTitle('');
     setDescription('');
@@ -66,7 +76,7 @@ export default function EventsPanel(props: { events: any[]; goingSet: Set<string
   return (
     <div>
       <button type="button" onClick={() => setShowForm((v) => !v)} style={{ marginBottom: 20 }}>
-        {showForm ? 'Annuler' : "+ Créer un événement"}
+        {showForm ? 'Annuler' : '+ Creer un evenement'}
       </button>
 
       {showForm && (
@@ -83,13 +93,14 @@ export default function EventsPanel(props: { events: any[]; goingSet: Set<string
           <label htmlFor="evDate">Date et heure</label>
           <input id="evDate" type="datetime-local" required value={startsAt} onChange={(e) => setStartsAt(e.target.value)} style={{ marginBottom: 16 }} />
 
+          {error && <p className="error-msg">{error}</p>}
           <button type="submit" disabled={saving || !title || !startsAt}>
-            {saving ? 'Création...' : "Publiér l'événement"}
+            {saving ? 'Creation...' : "Publier l'evenement"}
           </button>
         </form>
       )}
 
-      {props.events.length === 0 && <p className="empty-state">Aucun événement pour le moment.</p>}
+      {props.events.length === 0 && <p className="empty-state">Aucun evenement pour le moment.</p>}
 
       {props.events.map((ev) => {
         const isGoing = props.goingSet.has(ev.id);

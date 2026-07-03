@@ -11,19 +11,23 @@ export default function ClassifiedsPanel(props: { classifieds: any[]; onChanged:
   const [price, setPrice] = useState('');
   const [location, setLocation] = useState('');
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
+    setError(null);
+
     const supabase = createClient();
     const userResult = await supabase.auth.getUser();
     const user = userResult.data.user;
     if (!user) {
+      setError('Session expiree, reconnecte-toi.');
       setSaving(false);
       return;
     }
 
-    await supabase
+    const result = await supabase
       .schema('events')
       .from('classifieds')
       .insert({
@@ -36,6 +40,12 @@ export default function ClassifiedsPanel(props: { classifieds: any[]; onChanged:
       });
 
     setSaving(false);
+
+    if (result.error) {
+      setError('Publication impossible : ' + result.error.message);
+      return;
+    }
+
     setShowForm(false);
     setTitle('');
     setDescription('');
@@ -48,12 +58,12 @@ export default function ClassifiedsPanel(props: { classifieds: any[]; onChanged:
   return (
     <div>
       <button type="button" onClick={() => setShowForm((v) => !v)} style={{ marginBottom: 20 }}>
-        {showForm ? 'Annuler' : '+ Publiér une annonce'}
+        {showForm ? 'Annuler' : '+ Publier une annonce'}
       </button>
 
       {showForm && (
         <form onSubmit={handleCreate} className="cv-box">
-          <label htmlFor="clCategory">Catégorie</label>
+          <label htmlFor="clCategory">Categorie</label>
           <input id="clCategory" type="text" placeholder="Logement, covoiturage..." value={category} onChange={(e) => setCategory(e.target.value)} style={{ marginBottom: 16 }} />
 
           <label htmlFor="clTitle">Titre</label>
@@ -68,8 +78,9 @@ export default function ClassifiedsPanel(props: { classifieds: any[]; onChanged:
           <label htmlFor="clLocation">Lieu</label>
           <input id="clLocation" type="text" value={location} onChange={(e) => setLocation(e.target.value)} style={{ marginBottom: 16 }} />
 
+          {error && <p className="error-msg">{error}</p>}
           <button type="submit" disabled={saving || !title}>
-            {saving ? 'Publication...' : 'Publiér'}
+            {saving ? 'Publication...' : 'Publier'}
           </button>
         </form>
       )}

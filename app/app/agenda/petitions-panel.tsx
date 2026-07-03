@@ -16,19 +16,23 @@ export default function PetitionsPanel(props: {
   const [goal, setGoal] = useState('1000');
   const [saving, setSaving] = useState(false);
   const [signing, setSigning] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
+    setError(null);
+
     const supabase = createClient();
     const userResult = await supabase.auth.getUser();
     const user = userResult.data.user;
     if (!user) {
+      setError('Session expiree, reconnecte-toi.');
       setSaving(false);
       return;
     }
 
-    await supabase
+    const result = await supabase
       .schema('events')
       .from('petitions')
       .insert({
@@ -39,6 +43,12 @@ export default function PetitionsPanel(props: {
       });
 
     setSaving(false);
+
+    if (result.error) {
+      setError('Publication impossible : ' + result.error.message);
+      return;
+    }
+
     setShowForm(false);
     setTitle('');
     setDescription('');
@@ -68,12 +78,12 @@ export default function PetitionsPanel(props: {
   return (
     <div>
       <button type="button" onClick={() => setShowForm((v) => !v)} style={{ marginBottom: 20 }}>
-        {showForm ? 'Annuler' : "+ Lancer une pétition"}
+        {showForm ? 'Annuler' : '+ Lancer une petition'}
       </button>
 
       {!props.canSign && (
         <p className="hint" style={{ marginBottom: 20 }}>
-          Confirme ton email pour pouvoir signer des pétitions.
+          Confirme ton email pour pouvoir signer des petitions.
         </p>
       )}
 
@@ -88,13 +98,14 @@ export default function PetitionsPanel(props: {
           <label htmlFor="petGoal">Objectif de signatures</label>
           <input id="petGoal" type="text" inputMode="numeric" value={goal} onChange={(e) => setGoal(e.target.value.replace(/[^0-9]/g, ''))} style={{ marginBottom: 16 }} />
 
+          {error && <p className="error-msg">{error}</p>}
           <button type="submit" disabled={saving || !title}>
-            {saving ? 'Création...' : 'Publiér la pétition'}
+            {saving ? 'Creation...' : 'Publier la petition'}
           </button>
         </form>
       )}
 
-      {props.petitions.length === 0 && <p className="empty-state">Aucune pétition pour le moment.</p>}
+      {props.petitions.length === 0 && <p className="empty-state">Aucune petition pour le moment.</p>}
 
       {props.petitions.map((pet) => {
         const count = props.signatureCounts[pet.id] ?? 0;
@@ -116,7 +127,7 @@ export default function PetitionsPanel(props: {
               onClick={() => handleSign(pet.id)}
               style={{ marginTop: 12 }}
             >
-              {alreadySigned ? 'Déjà signé' : signing === pet.id ? 'Envoi...' : 'Signer'}
+              {alreadySigned ? 'Deja signe' : signing === pet.id ? 'Envoi...' : 'Signer'}
             </button>
           </div>
         );
