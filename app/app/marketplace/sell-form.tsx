@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { compressImage } from '@/lib/compress-image';
 
 type Variant = { size: string; color: string; stock: string; priceOverride: string };
 
@@ -47,7 +48,8 @@ export default function SellForm(props: { categories: any[]; onCreated: () => vo
     }
 
     const path = user.id + '/' + Date.now() + '-' + file.name;
-    const uploadResult = await supabase.storage.from('marketplace').upload(path, file);
+    const compressed = await compressImage(file);
+    const uploadResult = await supabase.storage.from('marketplace').upload(path, compressed);
 
     setUploading(false);
 

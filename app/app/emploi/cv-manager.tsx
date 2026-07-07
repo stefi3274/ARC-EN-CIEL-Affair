@@ -54,20 +54,27 @@ export default function CvManager(props: { myCv: any; onSaved: () => void }) {
         <p className="cv-status">Aucun CV enregistré pour l'instant.</p>
       )}
 
-      <label htmlFor="headline">Titre / poste recherche (optionnel)</label>
+      <label htmlFor="headline">Titre / poste recherché (optionnel)</label>
       <input
         id="headline"
         type="text"
         value={headline}
         onChange={(e) => setHeadline(e.target.value)}
-        placeholder="Ex: Developpeuse frontend"
-        style={{ marginBottom: 16 }}
+        placeholder="Ex: Développeuse frontend"
+        style={{ marginBottom: 20 }}
       />
 
-      <label className="photo-upload-btn" style={{ width: 'auto', padding: '10px 20px', display: 'inline-flex', alignItems: 'center', cursor: 'pointer' }}>
-        {uploading ? 'Envoi...' : 'Choisir un PDF'}
-        <input type="file" accept="application/pdf" onChange={handleUpload} style={{ display: 'none' }} />
-      </label>
+      <div className="cv-upload-zone">
+        <div className="cv-upload-icon">📄</div>
+        <label style={{ cursor: 'pointer' }}>
+          <span style={{ display: 'block', fontSize: '0.88rem', marginBottom: 6 }}>
+            {props.myCv ? 'Remplacer le fichier' : 'Choisir un fichier'}
+          </span>
+          <span className="hint" style={{ margin: 0 }}>PDF uniquement</span>
+          <input type="file" accept="application/pdf" onChange={handleUpload} style={{ display: 'none' }} />
+        </label>
+        {uploading && <span className="hint">Envoi...</span>}
+      </div>
 
       {error && <p className="error-msg" style={{ marginTop: 12 }}>{error}</p>}
     </div>

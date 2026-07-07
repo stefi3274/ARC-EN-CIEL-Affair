@@ -82,9 +82,11 @@ export default async function AppHome() {
 
         <div className="post-list">
           {rows.length === 0 && (
-            <p className="hint" style={{ textAlign: 'center', marginTop: 40 }}>
-              Aucun post pour le moment. Sois le premier a écrire quelque chose.
-            </p>
+            <div className="feed-empty">
+              <span className="feed-empty-mark"></span>
+              <p>Le fil est calme pour l'instant.</p>
+              <p className="hint">Sois le premier à partager quelque chose.</p>
+            </div>
           )}
 
           {rows.map((post) => {

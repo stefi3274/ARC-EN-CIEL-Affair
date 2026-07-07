@@ -25,6 +25,7 @@ export default function AgendaClient(props: Props) {
 
   return (
     <main className="agenda-main">
+      <div className="agenda-pride-banner"></div>
       <TabBar
         wrapperClass="agenda-tabs"
         active={tab}

@@ -1,8 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
+import { ACCENTS } from '@/components/theme-applier';
+import { compressImage } from '@/lib/compress-image';
 
 const ACCENT_OPTIONS = [
   { key: 'gold', label: 'Dore', color: '#C99A5B' },
@@ -31,6 +33,15 @@ export default function ProfilClient(props: {
   const [accent, setAccent] = useState(props.themeAccent);
   const [font, setFont] = useState(props.themeFont);
   const [mode, setMode] = useState(props.themeMode);
+
+  // Apercu en direct : applique le changement immediatement au clic,
+  // sans attendre l'enregistrement.
+  useEffect(() => {
+    const color = ACCENTS[accent] || ACCENTS.gold;
+    document.documentElement.style.setProperty('--gold', color);
+    document.body.classList.toggle('font-modern', font === 'modern');
+    document.body.classList.toggle('theme-light', mode === 'light');
+  }, [accent, font, mode]);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -54,7 +65,8 @@ export default function ProfilClient(props: {
     }
 
     const path = user.id + '/avatar-' + Date.now() + '.jpg';
-    const uploadResult = await supabase.storage.from('avatars').upload(path, file, { upsert: true });
+    const compressed = await compressImage(file, 720, 0.88);
+    const uploadResult = await supabase.storage.from('avatars').upload(path, compressed, { upsert: true });
 
     setUploadingAvatar(false);
 
@@ -135,23 +147,22 @@ export default function ProfilClient(props: {
     <div>
       <form onSubmit={handleSave}>
         <h1>Ton profil</h1>
-        <p className="sub">Ton identite et l'apparence de l'app, rien qu'a toi.</p>
+        <p className="sub">Ton identité et l'apparence de l'app, rien qu'à toi.</p>
 
-        <div className="photo-row" style={{ marginBottom: 24 }}>
+        <div className="avatar-upload-wrap">
           <div
-            className="photo-thumb"
-            style={{
-              width: 84, height: 84,
-              backgroundImage: avatarUrl ? 'url(' + avatarUrl + ')' : undefined,
-            }}
-          ></div>
-          <label className="photo-upload-btn" style={{ width: 84, height: 84, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-            {uploadingAvatar ? '...' : avatarUrl ? 'Changer' : '+ Photo'}
+            className="avatar-preview"
+            style={avatarUrl ? { backgroundImage: 'url(' + avatarUrl + ')' } : undefined}
+          >
+            {!avatarUrl && <span className="avatar-placeholder">Photo</span>}
+          </div>
+          <label className="avatar-edit-btn" aria-label="Changer la photo de profil">
+            {uploadingAvatar ? '···' : '📷'}
             <input type="file" accept="image/*" onChange={handleAvatarUpload} style={{ display: 'none' }} />
           </label>
         </div>
 
-        <label htmlFor="displayName">Nom affiche</label>
+        <label htmlFor="displayName">Nom affiché</label>
         <input
           id="displayName"
           type="text"

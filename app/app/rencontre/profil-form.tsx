@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { generateKeyPair, getPublicKey, savePublicKey, savePrivateKey } from '@/lib/crypto';
+import { compressImage } from '@/lib/compress-image';
 
 type Props = {
   bio: string;
@@ -48,7 +49,8 @@ export default function ProfilForm(props: Props) {
     }
 
     const path = user.id + '/' + Date.now() + '-' + file.name;
-    const uploadResult = await supabase.storage.from('dating-photos').upload(path, file);
+    const compressed = await compressImage(file);
+    const uploadResult = await supabase.storage.from('dating-photos').upload(path, compressed);
 
     setUploading(false);
 
@@ -74,7 +76,8 @@ export default function ProfilForm(props: Props) {
     }
 
     const path = user.id + '/status-' + Date.now() + '-' + file.name;
-    const uploadResult = await supabase.storage.from('dating-photos').upload(path, file);
+    const compressed = await compressImage(file);
+    const uploadResult = await supabase.storage.from('dating-photos').upload(path, compressed);
 
     setUploadingStatusPhoto(false);
 

@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-const ACCENTS: Record<string, string> = {
+export const ACCENTS: Record<string, string> = {
   gold: '#C99A5B',
   rose: '#C17B8D',
   green: '#5FA779',
