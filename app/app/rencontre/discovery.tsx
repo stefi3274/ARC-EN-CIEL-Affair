@@ -38,7 +38,7 @@ type Props = {
 
 export default function Discovery(props: Props) {
   const router = useRouter();
-  const [view, setView] = useState(props.hasDatingProfile ? 'grid' : 'profil');
+  const [view, setView] = useState('grid');
   const [profiles, setProfiles] = useState(props.initialProfiles);
   const [matchMessage, setMatchMessage] = useState<string | null>(null);
   const [matchLink, setMatchLink] = useState<string | null>(null);
@@ -114,6 +114,19 @@ export default function Discovery(props: Props) {
           { key: 'profil', label: 'Profil Rencontre' },
         ]}
       />
+
+      {!props.hasDatingProfile && (
+        <p className="hint" style={{ textAlign: 'center', marginBottom: 16 }}>
+          Tu n'as pas encore de profil Rencontre — les autres ne peuvent pas te découvrir.{' '}
+          <button
+            type="button"
+            onClick={() => setView('profil')}
+            style={{ width: 'auto', display: 'inline', padding: 0, background: 'none', color: 'var(--rose)', textDecoration: 'underline' }}
+          >
+            Le créer maintenant
+          </button>
+        </p>
+      )}
 
       {matchMessage && (
         <p className="hint" style={{ textAlign: 'center', color: 'var(--rose)', marginBottom: 16 }}>

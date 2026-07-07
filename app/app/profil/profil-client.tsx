@@ -249,6 +249,8 @@ export default function ProfilClient(props: {
           <a href="/legal/confidentialite" style={{ color: 'inherit' }}>Confidentialité</a>
           {' · '}
           <a href="/legal/mentions-legales" style={{ color: 'inherit' }}>Mentions légales</a>
+          {' · '}
+          <a href="/legal/contact" style={{ color: 'inherit' }}>Contact</a>
         </p>
       </div>
 
