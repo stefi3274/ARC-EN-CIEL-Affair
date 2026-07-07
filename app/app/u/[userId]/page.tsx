@@ -2,6 +2,7 @@ import { redirect, notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import TopBar from '@/components/top-bar';
 import { formatDateTime } from '@/lib/format-date';
+import JournalInviteButton from '../../journal-invite-button';
 
 export default async function PublicProfilePage({ params }: { params: { userId: string } }) {
   const supabase = createClient();
@@ -48,6 +49,10 @@ export default async function PublicProfilePage({ params }: { params: { userId: 
             </h1>
             {profile.pronouns && <p className="hint">{profile.pronouns}</p>}
           </div>
+        </div>
+
+        <div style={{ marginBottom: 24 }}>
+          <JournalInviteButton currentUserId={user.id} targetUserId={params.userId} />
         </div>
 
         <div className="post-list" style={{ marginTop: 24 }}>

@@ -116,11 +116,12 @@ export default function PostComposer(props: { groupId?: string; onPosted?: () =>
             <img src={mediaUrl} alt="" className="post-image" style={{ marginBottom: 14 }} />
           )}
 
-          <div className="photo-row" style={{ marginBottom: 14 }}>
-            <label className="photo-upload-btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-              {uploading ? '...' : mediaUrl ? 'Changer' : '+ Photo'}
+          <div className="composer-photo-row" style={{ marginBottom: 14 }}>
+            <label className="camera-btn" aria-label="Ajouter une photo">
+              {uploading ? '···' : '📸'}
               <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: 'none' }} />
             </label>
+            {mediaUrl && <span className="hint" style={{ margin: 0 }}>Photo ajoutée</span>}
           </div>
 
           {error && <p className="error-msg">{error}</p>}

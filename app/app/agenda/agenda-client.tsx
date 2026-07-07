@@ -6,6 +6,7 @@ import TabBar from '@/components/tab-bar';
 import EventsPanel from './events-panel';
 import PetitionsPanel from './petitions-panel';
 import ClassifiedsPanel from './classifieds-panel';
+import JournalPanel from './journal-panel';
 
 type Props = {
   currentUserId: string;
@@ -34,6 +35,7 @@ export default function AgendaClient(props: Props) {
           { key: 'evenements', label: 'Événements' },
           { key: 'petitions', label: 'Pétitions' },
           { key: 'annonces', label: 'Annonces' },
+          { key: 'journal', label: 'Journal' },
         ]}
       />
 
@@ -52,6 +54,7 @@ export default function AgendaClient(props: Props) {
       {tab === 'annonces' && (
         <ClassifiedsPanel classifieds={props.classifieds} onChanged={() => router.refresh()} />
       )}
+      {tab === 'journal' && <JournalPanel />}
     </main>
   );
 }
