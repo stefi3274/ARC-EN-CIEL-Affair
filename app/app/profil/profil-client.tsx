@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { ACCENTS } from '@/components/theme-applier';
 import { compressImage } from '@/lib/compress-image';
+import InviteButton from '../invite-button';
 
 const ACCENT_OPTIONS = [
   { key: 'gold', label: 'Dore', color: '#C99A5B' },
@@ -238,6 +239,14 @@ export default function ProfilClient(props: {
           {saved ? 'Enregistre' : saving ? 'Enregistrement...' : 'Enregistrer'}
         </button>
       </form>
+
+      <div style={{ marginTop: 28, paddingTop: 24, borderTop: '1px solid var(--line)' }}>
+        <label>Faire connaître la communauté</label>
+        <p className="hint" style={{ marginBottom: 12 }}>
+          Partage un lien d'invitation avec des proches.
+        </p>
+        <InviteButton />
+      </div>
 
       <div className="signout-row">
         <button type="button" onClick={handleSignOut} disabled={signingOut}>

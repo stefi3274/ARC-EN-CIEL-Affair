@@ -925,3 +925,106 @@ body.theme-light textarea, body.theme-light select{
   font-size:0.72rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--ivory-dim);
 }
 .contact-card-value{ font-size:0.95rem; color:var(--ivory); font-weight:500; }
+
+/* ---------- Vitrine publique (page racine, non connecte) ---------- */
+.landing-shell{ min-height:100vh; display:flex; flex-direction:column; }
+.landing-nav{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:24px 6vw;
+}
+.landing-nav-cta{
+  border:1px solid var(--gold); color:var(--gold); text-decoration:none;
+  padding:9px 20px; border-radius:100px; font-size:0.82rem;
+  text-transform:uppercase; letter-spacing:0.06em;
+}
+.landing-hero{ padding:8vh 6vw 4vh; max-width:760px; }
+.landing-title{
+  font-family:'Fraunces', serif; font-weight:560;
+  font-size:clamp(2.2rem, 6vw, 3.6rem); line-height:1.08; margin:20px 0 24px;
+  position:relative;
+}
+.landing-title em{ font-style:italic; font-weight:400; color:var(--gold); }
+.landing-signature{ display:block; margin-top:6px; max-width:280px; }
+.landing-signature svg{ width:100%; height:14px; display:block; }
+.landing-signature path{
+  stroke-dasharray:900; stroke-dashoffset:900;
+  animation:landing-draw 1.6s cubic-bezier(.6,0,.2,1) 0.4s forwards;
+}
+@keyframes landing-draw{ to{ stroke-dashoffset:0; } }
+.landing-sub{ color:var(--ivory-dim); font-size:1.02rem; line-height:1.6; max-width:520px; margin-bottom:32px; }
+.landing-cta-primary{
+  display:inline-block; background:var(--gold); color:#1a1410; text-decoration:none;
+  padding:16px 36px; border-radius:100px; font-weight:600; font-size:0.95rem;
+  transition:transform .2s ease;
+}
+.landing-cta-primary:hover{ transform:translateY(-2px); }
+
+.landing-marquee-wrap{
+  border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  overflow:hidden; padding:14px 0;
+}
+.landing-marquee{ display:flex; width:max-content; animation:landing-scroll 24s linear infinite; }
+.landing-marquee span{
+  font-family:'IBM Plex Mono', monospace; font-size:0.74rem; letter-spacing:0.12em;
+  text-transform:uppercase; color:var(--ivory-dim); padding:0 20px;
+  display:flex; align-items:center; gap:20px; white-space:nowrap;
+}
+.landing-marquee span::after{ content:'●'; font-size:5px; color:var(--gold); }
+@keyframes landing-scroll{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+@media (prefers-reduced-motion: reduce){
+  .landing-marquee{ animation:none; }
+  .landing-signature path{ animation:none; stroke-dashoffset:0; }
+}
+
+.landing-modules{
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr));
+  gap:1px; background:var(--line); border-bottom:1px solid var(--line);
+  margin-top:auto;
+}
+.landing-module-tile{ background:var(--ink); padding:28px 24px; transition:background .2s ease; }
+.landing-module-name{ font-family:'Fraunces', serif; font-weight:560; font-size:1.05rem; }
+.landing-module-tile p{ color:var(--ivory-dim); font-size:0.85rem; margin-top:8px; line-height:1.5; }
+.landing-module-fil{ background:linear-gradient(160deg, var(--blue-soft), var(--ink) 70%); }
+.landing-module-fil .landing-module-name{ color:var(--blue); }
+.landing-module-rencontre{ background:linear-gradient(160deg, var(--rose-soft), var(--ink) 70%); }
+.landing-module-rencontre .landing-module-name{ color:var(--rose); }
+.landing-module-emploi{ background:linear-gradient(160deg, var(--green-soft), var(--ink) 70%); }
+.landing-module-emploi .landing-module-name{ color:var(--green); }
+.landing-module-market{ background:linear-gradient(160deg, var(--orange-soft), var(--ink) 70%); }
+.landing-module-market .landing-module-name{ color:var(--orange); }
+.landing-module-agenda{ background:linear-gradient(160deg, var(--violet-soft), var(--ink) 70%); }
+.landing-module-agenda .landing-module-name{ color:var(--violet); }
+.landing-footer{
+  display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  padding:24px 6vw; font-size:0.78rem; color:var(--ivory-dim);
+}
+.landing-footer a{ color:inherit; text-decoration:none; }
+.landing-footer a:hover{ text-decoration:underline; }
+
+/* ---------- Invitation par plateforme ---------- */
+.invite-grid{
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(90px,1fr));
+  gap:12px; margin-bottom:14px;
+}
+.invite-tile{
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  padding:14px 8px; border-radius:14px; border:1px solid var(--line);
+  background:none; color:var(--ivory); text-decoration:none; font-size:0.78rem;
+  transition:border-color .2s ease, transform .15s ease;
+}
+.invite-tile:hover{ border-color:var(--gold); transform:translateY(-2px); }
+.invite-icon{
+  width:40px; height:40px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:1rem; color:#fff;
+}
+.invite-icon-whatsapp{ background:#25D366; }
+.invite-icon-facebook{ background:#1877F2; }
+.invite-icon-x{ background:var(--btn-bg); color:var(--btn-text); }
+.invite-icon-instagram{
+  background:linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  font-size:0.7rem;
+}
+.invite-copy-btn{
+  background:transparent; border:1px solid var(--line); color:var(--ivory-dim);
+}
