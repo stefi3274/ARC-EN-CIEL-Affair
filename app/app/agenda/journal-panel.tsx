@@ -35,7 +35,6 @@ export default function JournalPanel() {
   const [partners, setPartners] = useState<PartnerRow[]>([]);
   const [entries, setEntries] = useState<Entry[]>([]);
   const [content, setContent] = useState('');
-  const [shareWithPartner, setShareWithPartner] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [busyPartnerId, setBusyPartnerId] = useState<string | null>(null);
@@ -169,7 +168,7 @@ export default function JournalPanel() {
     const result = await supabase
       .schema('journal')
       .from('entries')
-      .insert({ author_id: currentUserId, content: content.trim(), shared_with_partner: shareWithPartner });
+      .insert({ author_id: currentUserId, content: content.trim(), shared_with_partner: true });
 
     setSaving(false);
 
@@ -179,7 +178,6 @@ export default function JournalPanel() {
     }
 
     setContent('');
-    setShareWithPartner(false);
     load();
   }
 
@@ -255,15 +253,16 @@ export default function JournalPanel() {
           style={{ marginBottom: 14 }}
         />
 
-        {acceptedPartner && (
-          <div className="toggle-row" style={{ borderTop: 'none', paddingTop: 0 }}>
-            <span>Partager avec {acceptedPartner.otherName}</span>
-            <input
-              type="checkbox"
-              checked={shareWithPartner}
-              onChange={(e) => setShareWithPartner(e.target.checked)}
-            />
-          </div>
+        {acceptedPartner ? (
+          <p className="hint" style={{ marginBottom: 14 }}>
+            Ce journal est partagé avec {acceptedPartner.otherName} — vous lisez et écrivez tous
+            les deux ici.
+          </p>
+        ) : (
+          <p className="hint" style={{ marginBottom: 14 }}>
+            Ce journal est secret. Toi seul·e le vois, tant que personne n'a accepté ton
+            invitation.
+          </p>
         )}
 
         {error && <p className="error-msg">{error}</p>}

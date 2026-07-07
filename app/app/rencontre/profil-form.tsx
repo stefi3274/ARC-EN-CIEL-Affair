@@ -223,8 +223,8 @@ export default function ProfilForm(props: Props) {
           {photos.map((path) => (
             <div key={path} className="photo-thumb" title={path}></div>
           ))}
-          <label className="photo-upload-btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-            {uploading ? '...' : '+'}
+          <label className="camera-btn" aria-label="Ajouter une photo">
+            {uploading ? '···' : '📸'}
             <input type="file" accept="image/*" onChange={handlePhotoUpload} style={{ display: 'none' }} />
           </label>
         </div>
@@ -253,8 +253,8 @@ export default function ProfilForm(props: Props) {
 
         <div className="photo-row" style={{ marginBottom: 12 }}>
           {statusPhoto && <div className="photo-thumb" title={statusPhoto}></div>}
-          <label className="photo-upload-btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-            {uploadingStatusPhoto ? '...' : '+ Photo'}
+          <label className="camera-btn" aria-label="Ajouter une photo au statut">
+            {uploadingStatusPhoto ? '···' : '📸'}
             <input type="file" accept="image/*" onChange={handleStatusPhotoUpload} style={{ display: 'none' }} />
           </label>
         </div>

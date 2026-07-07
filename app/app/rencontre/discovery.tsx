@@ -111,7 +111,7 @@ export default function Discovery(props: Props) {
           { key: 'grid', label: 'Grille' },
           { key: 'swipe', label: 'Swipe' },
           { key: 'messages', label: 'Messages' },
-          { key: 'profil', label: 'Mon profil' },
+          { key: 'profil', label: 'Profil Rencontre' },
         ]}
       />
 

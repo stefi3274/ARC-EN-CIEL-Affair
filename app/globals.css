@@ -911,3 +911,6 @@ body.theme-light textarea, body.theme-light select{
 .journal-entry-meta{
   display:flex; justify-content:space-between; font-size:0.72rem; color:var(--ivory-dim);
 }
+.journal-entries, .journal-prompt{
+  user-select:none;
+}
